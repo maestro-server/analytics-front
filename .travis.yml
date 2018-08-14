@@ -1,0 +1,57 @@
+language: node_js
+node_js:
+  - '8'
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - g++-5
+addons:
+  code_climate:
+    repo_token: ee013419d55c067c7956172f66c52048feed8917a3a6f0bfad674c7c54417e7d
+env:
+  - CXX=g++-5 DB=mongodb NODE_ENV=test
+cache:
+  directories:
+    - node_modules
+services:
+  - mongodb
+  - docker
+before_install:
+  - npm install -g node-gyp istanbul
+
+jobs:
+  include:
+    - stage: test
+      node_js:
+        - '8'
+        - '7'
+      script:
+        - npm run test
+
+    - stage: coverage
+      script:
+        - npm run coverage
+      after_success:
+        - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+        - cat ./coverage/lcov.info | ./node_modules/.bin/codacy-coverage -p .
+        - cat ./coverage/lcov.info | ./node_modules/.bin/codeclimate-test-reporter
+
+    - stage: build docker image - base
+      if: branch != master
+      node_js: 8
+      script:
+        - docker build -f Dockerfile -t $REPO .
+        - docker login -u $DOCKER_USER -p $DOCKER_PASS
+        - docker tag $REPO $DOCKER_USER/$REPO:$TRAVIS_BRANCH
+        - docker push $DOCKER_USER/$REPO:$TRAVIS_BRANCH
+
+    - stage: build docker image - latest
+      if: branch = master
+      node_js: 8
+      script:
+        - docker build -f Dockerfile -t $REPO .
+        - docker login -u $DOCKER_USER -p $DOCKER_PASS
+        - docker tag $REPO $DOCKER_USER/$REPO:latest
+        - docker push $DOCKER_USER/$REPO:latest

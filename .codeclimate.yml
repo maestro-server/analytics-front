@@ -1,0 +1,24 @@
+---
+engines:
+  eslint:
+    enabled: true
+    config:
+      config: .eslintrc
+      extensions:
+      - .js
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - javascript:
+          mass_threshold: 60
+
+ratings:
+  paths:
+  - app/**.js
+exclude_paths:
+- "test/"
+- "node_modules/"
+- "build/"
+- "app/core/routers/"
+- "app/identity/routers/"

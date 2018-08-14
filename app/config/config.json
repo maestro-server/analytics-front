@@ -1,0 +1,79 @@
+{
+    "i18n": {
+        "contentPath": "path:./locales",
+        "fallback": "en-US"
+    },
+    "middleware": {
+        "session": {
+            "enabled": false
+        },
+        "static": {
+            "enabled": true,
+            "priority": 40,
+            "module": {
+                "name": "serve-static",
+                "arguments": [ "path:./../public" ]
+            }
+        },
+        "cookieParser": {
+            "enabled": false
+        },
+        "favicon": {
+            "enabled": false
+        },
+        "multipart": {
+            "enabled": true,
+            "params": {
+                "keepExtensions": true
+            }
+        },
+        "filter": {
+            "priority": 40,
+            "module": {
+                "name": "content-filter",
+                "arguments": [
+                    {
+                        "dispatchToErrorHandler": true
+                    }
+                ]
+            }
+        },
+        "cors": {
+            "priority": 1,
+            "module": "path:./core/middlewares/cors"
+        },
+        "tokenization": {
+            "priority": 45,
+            "module": "path:./core/middlewares/tokenization"
+        },
+        "appsec": {
+            "priority": 110,
+            "module": {
+                "name": "lusca",
+                "arguments": [
+                    {
+                        "csrf": false
+                    }
+                ]
+            }
+        },
+        "router": {
+            "priority": 120,
+            "module": {
+                "arguments": [
+                    {
+                        "directory": "path:./core/routers"
+                    }
+                ]
+            }
+        },
+        "notFound": {
+            "priority": 130,
+            "module": "path:./core/middlewares/404"
+        },
+        "errorResponse": {
+            "priority": 140,
+            "module": "path:./core/middlewares/errorCatcher"
+        }
+    }
+}

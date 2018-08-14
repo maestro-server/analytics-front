@@ -1,0 +1,11 @@
+{
+  "apps": [{
+    "name": "analytics-front",
+    "script": "./server.js",
+    "env": {
+      "production": true,
+      "NODE_ENV": "production",
+      "PORT": 9999
+    }
+  }]
+}
