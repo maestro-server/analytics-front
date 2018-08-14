@@ -7,7 +7,7 @@ const {Strategy} = require('passport-jwt');
 const User = require('identity/entities/Users');
 const DBRepository = require('core/repositories/DBRepository');
 
-const config = require('identity/config/auth_config');
+const config = require('identity/config/auth_config')();
 const PermissionError = require('core/errors/factoryError')('PermissionError');
 
 module.exports = function() {

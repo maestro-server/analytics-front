@@ -16,6 +16,7 @@
     "coverage": "nyc --reporter=lcov mocha test/**/*js --timeout 5000 --exit"
   },
   "dependencies": {
+    "adaro": "^1.0.4",
     "app-module-path": "~2.2.0",
     "aws-sdk": "^2.258.1",
     "axios": "^0.18.0",

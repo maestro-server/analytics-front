@@ -1,8 +1,27 @@
 {
+    "express": {
+        "view cache": false,
+        "view engine": "dust",
+        "views": "path:./templates"
+    },
+
+    "view engines": {
+        "dust": {
+            "module": "adaro",
+            "renderer": {
+                "method": "dust",
+                "arguments": [
+                    { "cache": true }
+                ]
+            }
+        }
+    },
+
     "i18n": {
         "contentPath": "path:./locales",
         "fallback": "en-US"
     },
+
     "middleware": {
         "session": {
             "enabled": false
@@ -46,6 +65,10 @@
             "priority": 45,
             "module": "path:./core/middlewares/tokenization"
         },
+        "tokenization-analytics": {
+            "priority": 45,
+            "module": "path:./graph/middlewares/tokenization_analytics"
+        },
         "appsec": {
             "priority": 110,
             "module": {
@@ -63,6 +86,17 @@
                 "arguments": [
                     {
                         "directory": "path:./core/routers"
+                    }
+                ]
+            }
+        },
+        "router-graph": {
+            "priority": 120,
+            "module": {
+                "name": "express-enrouten",
+                "arguments": [
+                    {
+                        "directory": "path:./graph/routers/graphs"
                     }
                 ]
             }

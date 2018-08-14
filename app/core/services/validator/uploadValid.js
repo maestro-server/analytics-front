@@ -7,7 +7,7 @@ const validateFile = (file, opts) => {
     const defaultParams = {
         maxsize: 1630240, //~1 mb,
         minsize: 1024, // 1 kbs
-        type: ["image/jpeg", "image/png"]
+        type: ["text/html", "text/xml"]
     };
 
     const config = Object.assign({}, defaultParams, opts);
@@ -31,7 +31,7 @@ const validateFile = (file, opts) => {
                 return true;
             }
 
-            error.push("We only acceptable jpg or png");
+            error.push("We only acceptable html or xml");
             return false;
         },
 

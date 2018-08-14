@@ -4,9 +4,10 @@ module.exports = function(type) {
 
     const maps = {
         "image/jpeg": "jpg",
-        "image/jpg": "jpg",
         "image/gif": "gif",
-        "image/png": "png"
+        "image/png": "png",
+        "text/xml": "xml",
+        "text/html": "html"
     };
 
     if(maps[type] !== null && maps.hasOwnProperty(type)) {

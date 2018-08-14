@@ -29,6 +29,7 @@ const UploaderService = (Entity) => {
         },
 
         uploadImage(req, owner) {
+            
             return new Promise((resolve, reject) => {
 
                 const form = new formidable.IncomingForm({uploadDir: getPwdPath()});
