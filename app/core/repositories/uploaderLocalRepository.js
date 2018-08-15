@@ -2,26 +2,30 @@
 
 const _ = require('lodash');
 const fs = require('fs');
-const mapsFile = require('./maps/mapFileType');
 const getPwdPath = require('core/libs/pwd');
+const mkDirByPathSync = require('./libs/mkdirRecursive');
 
-const {CONTENT_UPLOAD_DEFAULT, LOCAL_DIR_DEFAULT} = require('core/configs/uploadRole');
+const {LOCAL_DIR_DEFAULT} = require('core/configs/uploadRole');
 
 const UploaderRepository = () => {
+
+    const appRoot = getPwdPath();
+    const base = process.env.LOCAL_DIR || LOCAL_DIR_DEFAULT;
+
+    const newPath = `${appRoot}${base}`;
+
+    mkDirByPathSync(newPath);
 
     return {
         upload(out, folder, filename) {
             return new Promise((resolve, reject) => {
-                const appRoot = getPwdPath();
-                const base = process.env.LOCAL_DIR || LOCAL_DIR_DEFAULT;
 
-                const newPath = `${appRoot}${base}/${folder}`;
-                const fullpath = `${newPath}/${filename}`;
+                const relPath = `${newPath}/${folder}`;
+                const fullpath = `${relPath}/${filename}`;
 
-                if (!fs.existsSync(newPath)){
-                    fs.mkdirSync(newPath);
+                if (!fs.existsSync(relPath)){
+                    fs.mkdirSync(relPath);
                 }
-
 
                 fs.writeFile(fullpath, out, (err) => {
                     if (err)
