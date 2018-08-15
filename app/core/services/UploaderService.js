@@ -1,10 +1,9 @@
 'use strict';
 
 const _ = require('lodash');
-const formidable = require('formidable');
-const validateFile = require('./validator/uploadValid');
 const {TYPE_DEFAULT} = require('core/configs/uploadRole');
-const getPwdPath = require('core/libs/pwd');
+const FileFoundError = require('core/errors/factoryError')('FileFoundError');
+
 
 const UploaderService = (Entity) => {
   const typeU = process.env.MAESTRO_UPLOAD_TYPE || TYPE_DEFAULT;
@@ -24,6 +23,18 @@ const UploaderService = (Entity) => {
                     .then(resolve)
                     .catch(reject);
 
+            });
+        },
+
+        readImage(owner, folder='graphs-bussiness', ext='html') {
+
+            return new Promise((resolve, reject) => {
+                const filename = `${owner}.${ext}`;
+
+                return UploaderRepository
+                    .readfiles(folder, filename)
+                    .then(resolve)
+                    .catch(reject);
             });
         }
     };

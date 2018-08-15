@@ -11,7 +11,7 @@
             "renderer": {
                 "method": "dust",
                 "arguments": [
-                    { "cache": true }
+                    { "cache": false }
                 ]
             }
         }

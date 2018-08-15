@@ -11,8 +11,9 @@
 
 </head>
 <body>
-    <div id="viwer">
-        {payload}
+    <div id="viewer">
+        {payload|s}
     </div>
+
 </body>
 </html>

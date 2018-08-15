@@ -1,6 +1,6 @@
 'use strict';
 
-const middleAuth = require('identity/config/auth_conector');
+const middleAuth = require('graph/config/auth_conector');
 
 module.exports = function () {
     return middleAuth().initialize();

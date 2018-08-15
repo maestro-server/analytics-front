@@ -7,6 +7,7 @@ const mkDirByPathSync = require('./libs/mkdirRecursive');
 
 const {LOCAL_DIR_DEFAULT} = require('core/configs/uploadRole');
 
+
 const UploaderRepository = () => {
 
     const appRoot = getPwdPath();
@@ -19,9 +20,9 @@ const UploaderRepository = () => {
     return {
         upload(out, folder, filename) {
             return new Promise((resolve, reject) => {
-
                 const relPath = `${newPath}/${folder}`;
                 const fullpath = `${relPath}/${filename}`;
+
 
                 if (!fs.existsSync(relPath)){
                     fs.mkdirSync(relPath);
@@ -35,6 +36,21 @@ const UploaderRepository = () => {
                         filename,
                         fullpath
                     });
+                });
+            });
+        },
+
+        readfiles(folder, filename) {
+
+            return new Promise((resolve, reject) => {
+                const relPath = `${newPath}/${folder}`;
+                const fullpath = `${relPath}/${filename}`;
+
+                fs.readFile(fullpath, 'utf8', function(err, contents) {
+                    if (err)
+                        reject(err);
+
+                    resolve(contents);
                 });
             });
         }

@@ -2,13 +2,13 @@
 
 const {ExtractJwt} = require('passport-jwt');
 
-module.exports = (token='SECRETJWT') => {
-    const secret = process.env[`MAESTRO_${token}`];
+module.exports = () => {
+    const secret = process.env.MAESTRO_SECRETJWT;
 
     return {
         jwtSecret: {
             secretOrKey: secret || 'defaultSecretKey',
-            jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('jwt')
+            jwtFromRequest: ExtractJwt.fromUrlQueryParameter('jwt')
         },
         jwtSession: {
             session: false

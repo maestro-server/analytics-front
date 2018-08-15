@@ -31,32 +31,6 @@ describe('unit - core', function () {
         done();
     });
 
-    it('libs - factoryPromises', function (done) {
-        const factory = require('core/libs/factoryPromisefy');
-        const text = "Texter";
-
-        const promise = (txt) => (new Promise((resolve, reject) => {
-            txt ? resolve(txt) : reject(err);
-        }));
-
-        const fact = factory(() => promise(text));
-
-        expect(fact).to.eventually.equal(text);
-        expect(fact).to.fulfilled.and.notify(done);
-    });
-
-    it('libs - factoryPromises - reject', function (done) {
-        const factory = require('core/libs/factoryPromisefy');
-        const text = false;
-
-        const promise = (txt) => (new Promise((resolve, reject) => {
-            txt ? resolve(txt) : reject(txt);
-        }));
-
-        const fact = factory(() => promise(text));
-
-        expect(fact).be.rejected.and.notify(done);
-    });
 
     it('libs - factoryValid', function (done) {
         const fValid = require('core/libs/factoryValid');

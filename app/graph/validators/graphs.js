@@ -3,7 +3,9 @@
 const Joi = require('joi');
 
 const schema = Joi.object().keys({
-    payload: Joi.any().required()
+    status: Joi.string().valid('process', 'finished', 'error', 'warning').default('process'),
+    msg: Joi.any(),
+    active: Joi.boolean()
 });
 
 module.exports = {

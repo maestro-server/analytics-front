@@ -5,9 +5,9 @@ const _ = require('lodash');
 const Graphs = require('../repositories/dao/graphs');
 
 const graphs = () => {
-    const resFilled = ['_id', 'updated_at', 'created_at', 'name', 'tab', 'status', 'systems', 'clients', 'apps'];
+    const resFilled = ['_id', 'updated_at', 'status'];
 
-    const singleFilled = [...resFilled, 'msg', 'type', 'roles', 'owner'];
+    const singleFilled = [...resFilled, 'msg'];
 
     const filled = [..._.slice(singleFilled, 2)]; // delete id
 
@@ -19,8 +19,6 @@ const graphs = () => {
       validators: require('../validators/graphs'),
 
       dao: Graphs,
-
-      mapRelations: ['systems', 'apps', 'clients'],
 
       filled,
       singleFilled,

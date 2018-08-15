@@ -3,23 +3,31 @@
 const _ = require('lodash');
 
 const DPersistenceServices = require('core/services/PersistenceServices');
-const aclRoles = require('core/applications/transforms/aclRoles');
-const Access = require('core/entities/accessRole');
+const DUploaderService = require('core/services/UploaderService');
 
-const mapRelationToObjectID = require('core/applications/transforms/mapRelationToObjectID');
+const notExist = require('graph/applications/validator/validNotExist');
 
-const {AnalyticsHTTPService} = require('core/services/HTTPService');
 
-const ApplicationReport = (Entity, PersistenceServices = DPersistenceServices) => {
+const ApplicationReport = (Entity, PersistenceServices = DPersistenceServices) => (FUploadService = DUploaderService) => {
+
+    const UploadService = FUploadService;
 
     return {
         view(req, res, next) {
-            const data = {
-                'svg': 'templates'
-            }
+            const {id} = req.params;
 
-            res.render('index', data);
-
+            PersistenceServices(Entity)
+                .findOne(id, req.user)
+                .then(notExist)
+                .then((e) => {
+                    return UploadService(Entity)
+                            .readImage(id);
+                })
+                .then(e => res.send(e))
+                .catch((e) => {
+                    console.error(e);
+                    res.render('404');
+                });
         }
     };
 };

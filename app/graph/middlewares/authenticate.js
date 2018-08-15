@@ -1,7 +1,7 @@
 'use strict';
 
-const analyticsAuth = require('graph/config/auth_analytics_conector');
+const middleAuth = require('graph/config/auth_conector');
 
 module.exports = function () {
-    return analyticsAuth().authenticate();
+    return middleAuth().authenticate();
 };

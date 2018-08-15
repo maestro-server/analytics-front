@@ -100,16 +100,6 @@ describe('unit - core', function () {
         done();
     });
 
-    it('services - validator - uploadValid - typeValidate = false', function (done) {
-        const uploadValid = require('core/services/validator/uploadValid');
-
-        const file = {size: 2000, name: "tester", type: "image/jpeg"};
-        const tt = uploadValid(file);
-
-        expect(tt.pass()).to.be.equal(true);
-
-        done();
-    });
 
     it('services - validator - uploadValid - check', function (done) {
         const uploadValid = require('core/services/validator/uploadValid');
@@ -124,15 +114,6 @@ describe('unit - core', function () {
         done();
     });
 
-    it('services - validator - validNotFound', function (done) {
-        const valid = require('core/services/validator/validNotEqual');
-        const tt = valid("roler", "asd");
-
-        expect(tt).to.have.property("roler")
-            .to.have.property('$ne', "asd");
-
-        done();
-    });
 
     describe('services - PersistenceServices', function () {
         const Entity = {name: "Tester", access: "roler", filled: ['name']};
@@ -141,27 +122,6 @@ describe('unit - core', function () {
         const owner = {name: "tester", _id: "452ed4a4f4421335e032bf09"};
         const _id = "452ed4a4f4421335e032bf09";
 
-        it('find', function (done) {
-            let find = sinon.stub().resolves();
-            let count = sinon.stub().resolves();
-            let SPS = sinon.stub()
-                .returns({
-                    find,
-                    count
-                });
-
-            PersistenceServices(Entity, SPS).find({}, owner);
-            expect(find.args[0][0]).to.be.property("roler")
-                .to.have.property("$elemMatch");
-
-            expect(count.args[0][0]).to.be.property("roler")
-                .to.have.property("$elemMatch");
-
-            sinon.assert.calledOnce(find);
-            sinon.assert.calledOnce(count);
-            sinon.assert.calledOnce(SPS);
-            done();
-        });
 
         it('findOne', function (done) {
             let findOne = sinon.stub().resolves();
@@ -219,81 +179,12 @@ describe('unit - core', function () {
             done();
         });
 
-        it('remove', function (done) {
-            let remove = sinon.stub().resolves();
-            let SPS = sinon.stub()
-                .returns({
-                    remove
-                });
-
-            PersistenceServices(Entity, SPS).remove(_id, owner);
-
-            expect(remove.args[0][0]).to.have.property("_id");
-            expect(remove.args[0][0]).to.have.property("roler");
-            sinon.assert.calledOnce(remove);
-            sinon.assert.calledOnce(SPS);
-            done();
-        });
 
 
     });
 
 
-    describe('services - AccessServices', function () {
-        const Entity = {name: "Tester", access: "roler", filled: ['name']};
-        const AccessServices = require('core/services/AccessServices');
 
-        const owner = {name: "tester", _id: "452ed4a4f4421335e032bf09"};
-        const _id = "452ed4a4f4421335e032bf09";
-
-        it('addRoles', function (done) {
-            let updateByPushUnique = sinon.stub().resolves();
-            let SPS = sinon.stub()
-                .returns({
-                    updateByPushUnique
-                });
-
-            const post = {role: "1", id: "452ed4a4f4421335e032bf09", name: "Tname", refs: "teams"};
-
-            AccessServices(Entity, SPS).addRoles(_id, post, owner);
-
-            expect(updateByPushUnique.args[0][0]).to.have.property('_id');
-            expect(updateByPushUnique.args[0][0]).to.have.property(Entity.access)
-                .to.have.property('$elemMatch');
-
-            expect(updateByPushUnique.args[0][1]).to.have.property('roler')
-                .to.have.property('role', 1);
-
-            expect(updateByPushUnique.args[0][1]).to.have.property('roler')
-                .to.have.property('role', 1);
-
-
-            expect(updateByPushUnique.args[0][2]).to.have.equal(Entity.access);
-
-            sinon.assert.calledOnce(updateByPushUnique);
-            sinon.assert.calledOnce(SPS);
-            done();
-        });
-
-
-        it('deleteRoles', function (done) {
-            let updateByPull = sinon.stub().resolves();
-            let SPS = sinon.stub()
-                .returns({
-                    updateByPull
-                });
-
-
-            AccessServices(Entity, SPS).deleteRoles(_id, _id, owner);
-
-            expect(updateByPull.args[0][0]).to.have.property('_id');
-            sinon.assert.calledOnce(SPS);
-            sinon.assert.calledOnce(updateByPull);
-            done();
-        });
-
-
-    });
 
 
 
