@@ -18,38 +18,18 @@ const UploaderRepository = (folder) => {
 
     return {
 
-        upload(_id, type) {
-            return new Promise((resolve) => {
+        upload(out, folder, filename, filetype="text/html") {
+            const s3 = new aws.S3();
+            const S3_BUCKET = process.env.AWS_S3_BUCKET_NAME;
+            const PATH = S3_BUCKET + '/' + folder;
 
-                const s3 = new aws.S3();
-                const S3_BUCKET = process.env.AWS_S3_BUCKET_NAME;
-                const PATH = S3_BUCKET + '/' + folder;
-                const filename = `${_id}.${mapsFile(type)}`;
 
-                const s3Params = {
-                    Bucket: PATH,
-                    Key: filename,
-                    Expires: 60,
-                    ContentType: type,
-                    ACL: 'public-read'
-                };
-
-                s3.getSignedUrl('putObject', s3Params, (err, data) => {
-                    if (err) {
-                        throw new UploaderError(err);
-                    }
-
-                    const returnData = {
-                        signedRequest: data,
-                        url: `https://s3.amazonaws.com/${S3_BUCKET}/${folder}/${filename}`,
-                        filename: `${folder}/${filename}`,
-                        headers: {"Content-type": type}
-                    };
-
-                    resolve(returnData);
-                });
-
-            });
+            return s3.putObject({
+                Bucket: PATH,
+                Key: filename,
+                ContentType: filetype,
+                Body: out
+            }).promise();
         }
     };
 };

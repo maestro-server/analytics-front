@@ -13,35 +13,16 @@ const UploaderService = (Entity) => {
   const UploaderRepository = FUploaderRepository(Entity.name);
 
     return {
-        signed ({query, headers}, owner) {
 
-            return new Promise((resolve, reject) => {
-                const type = query.filetype;
-                const {_id} = owner;
-
-                validateFile({type}).check();
-
-                return UploaderRepository
-                    .upload(_id, type, headers)
-                    .then(resolve)
-                    .catch(reject);
-            });
-        },
-
-        uploadImage(req, owner) {
+        uploadImage(out, owner, folder='graphs-bussiness', ext='html') {
             
             return new Promise((resolve, reject) => {
+                const filename = `${owner}.${ext}`;
 
-                const form = new formidable.IncomingForm({uploadDir: getPwdPath()});
-                form.parse(req, (err, fields, files) => {
-                    if (err) reject(err);
-
-                    const {query} = req;
-                    return UploaderRepository
-                        .download(files, query, owner)
-                        .then(resolve)
-                        .catch(reject);
-                });
+                return UploaderRepository
+                    .upload(out, folder, filename)
+                    .then(resolve)
+                    .catch(reject);
 
             });
         }

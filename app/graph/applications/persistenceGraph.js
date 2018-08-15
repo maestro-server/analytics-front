@@ -19,10 +19,7 @@ const ApplicationAnalytics = (Entity, FactoryDBRepository = DFactoryDBRepository
                     if (err)
                         next(err);
     
-                    UploadHTML(Entity)(out, req.user, req.hostname)()
-                        .then((e) => {
-                            console.log(e)
-                        })
+                    UploadHTML(Entity)(out, req.user)()
                         .then(e => res.json(e))
                         .catch(next);
                 });

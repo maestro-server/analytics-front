@@ -5,38 +5,14 @@ const _ = require('lodash');
 const DUploaderService = require('core/services/UploaderService');
 
 
-module.exports = (Entity) => (out, owners, host, filetype="text/html") => (FUploadService = DUploaderService) => {
+module.exports = (Entity) => (out, owners) => (FUploadService = DUploaderService) => {
 
-    const UploadService = FUploadService(Entity);
+    const UploadService = FUploadService;
 
     return new Promise((resolve, reject) => {
-        const req = {
-            query: {filetype},
-            headers: {host}
-        };
 
-        const owner = {_id: owners['graph_id']};
-        console.log(host);
-
-        const query = {
-            'ext': 'html',
-            'folder': 'graphs'
-        }
-
-        
-        let buffer = new Buffer(out);
-
-        UploadService
-            .signed(req, owner)
-            .then((e) => {
-                const nreq = {
-                    query,
-                    files
-                }
-                return UploadService
-                    .uploadImage(nreq, owner)
-            })
-            .then(console.log)
+        UploadService(Entity)
+            .uploadImage(out, owners['graph_id'])
             .then(resolve)
             .catch(reject);
     });
