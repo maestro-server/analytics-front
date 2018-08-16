@@ -1,0 +1,23 @@
+{
+  "name": "Analytics Front - Maestro Server",
+  "description": "Analytics Front - Maestro Server",
+  "main": "server.js",
+  "authors": [
+    "Felipe Klerk Signorini &lt;felipeklerk@yahoo.com.br&gt;"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/maestro-server/analytics-front",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/js/components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "svg.js": "^2.6.5",
+    "svg-pan-zoom": "^3.5.2",
+    "jquery": "^3.3.1"
+  }
+}

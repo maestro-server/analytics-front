@@ -9,11 +9,19 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <link rel="stylesheet" type="text/css" href="{hostname}/css/main.css"></link>
+
 </head>
 <body>
     <div id="viewer">
         {payload|s}
     </div>
+
+
+    <script src="{hostname}/js/components/jquery/dist/jquery.slim.min.js"></script>
+    <script src="{hostname}/js/components/svg.js/dist/svg.min.js"></script>
+    <script src="{hostname}/js/components/svg-pan-zoom/dist/svg-pan-zoom.min.js"></script>
+    <script src="{hostname}/js/main.js"></script>
 
 </body>
 </html>
