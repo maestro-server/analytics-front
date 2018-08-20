@@ -109,6 +109,8 @@ function AppTooltip(app) {
     }
 
     function hiddenTool(target) {
+        target.removeClass('glowing');
+
         tooltip
             .removeClass('show');
     }
@@ -128,19 +130,23 @@ function AppTooltip(app) {
         var elID = getIdTool(id);
         var obj = $(elID)
 
-        console.log(obj)
         showTool(obj, e);
+        $(this).addClass('glowing');
     };
 
     this.desactived = function(e) {
+        var that = $(this);
+
         if ($(e.toElement).hasClass('apptlp')) {
             $(e.toElement).mouseleave(function() {
-                hiddenTool();
+                hiddenTool(that);
                 $(this).off('mouseleave');
-            })
+            });
         } else {
-            hiddenTool();
+            hiddenTool(that);
         }
+
+        
     };
 }
 
@@ -191,4 +197,8 @@ function AppSVG(svg) {
 $(document).ready(function() {
     var app = new AppSVG();
     app.setup();
+
+    $('.menu li').hover(function(){
+        $(this).find('ul').slideToggle('fast');
+    });
 });

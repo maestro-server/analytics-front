@@ -13,12 +13,25 @@
 
 </head>
 <body>
+    <svg>
+        <filter id="glow" height="300%" width="300%" x="-75%" y="-75%">
+            <feMorphology operator="dilate" radius="4" in="SourceAlpha" result="thicken" />
+            <feGaussianBlur in="thicken" stdDeviation="10" result="blurred" />
+            <feFlood flood-color="rgb(234,25,25)" result="glowColor" />
+            <feComposite in="glowColor" in2="blurred" operator="in" result="softGlow_colored" />
+            <feMerge>
+                <feMergeNode in="softGlow_colored"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+    </svg>
+
     <div id="viewer">
         {payload|s}
     </div>
 
     <div id="info">
-        <ul>
+        <ul class="menu">
             <li>
                 <h1>MyTitle</h1>
             </li>
@@ -28,25 +41,32 @@
             </li>
 
             <li>
-                <h2>Density</h2>
+                <h2>Density <p class="number">(0.3)</p></h2>
+                
             </li>
 
             <li>
-                <h2>Systems (21)</h2>
+                <h2>Servers <p class="number">(245)</p></h2>
+                
+            </li>
+
+            <li>
+                <h2>Systems <p class="number">(2)</p></h2>
                 <ul>
-                    <li>System1</li>
+                    <li><a href="#">- System1</a></li>
+                    <li><a href="#">- System2</a></li>
                 </ul>
             </li>
 
             <li>
-                <h2>Clients (21)</h2>
+                <h2>Clients <p class="number">(1)</p></h2>
                 <ul>
-                    <li>Clients</li>
+                    <li><a href="#">- Clients</a></li>
                 </ul>
             </li>
         </ul>
 
-        <a href="http://maestroserver.io" target="_blank" class="footer">Maestro Server</a>
+        <a href="http://maestroserver.io" target="_blank" class="footer">Powered by<br/> Maestro Server</a>
     </div>
 
     <div id="conn-tooltip" class="minitlp noshow"></div>
@@ -58,7 +78,7 @@
         </div>
     </div>
 
-    <script src="{hostname}/js/components/jquery/dist/jquery.slim.min.js"></script>
+    <script src="{hostname}/js/components/jquery/dist/jquery.min.js"></script>
     <script src="{hostname}/js/components/svg.js/dist/svg.min.js"></script>
     <script src="{hostname}/js/components/svg-pan-zoom/dist/svg-pan-zoom.min.js"></script>
     <script src="{hostname}/js/main.js"></script>
