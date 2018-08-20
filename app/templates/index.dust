@@ -17,6 +17,46 @@
         {payload|s}
     </div>
 
+    <div id="info">
+        <ul>
+            <li>
+                <h1>MyTitle</h1>
+            </li>
+
+            <li>
+                <h2>Histograms</h2>
+            </li>
+
+            <li>
+                <h2>Density</h2>
+            </li>
+
+            <li>
+                <h2>Systems (21)</h2>
+                <ul>
+                    <li>System1</li>
+                </ul>
+            </li>
+
+            <li>
+                <h2>Clients (21)</h2>
+                <ul>
+                    <li>Clients</li>
+                </ul>
+            </li>
+        </ul>
+
+        <a href="http://maestroserver.io" target="_blank" class="footer">Maestro Server</a>
+    </div>
+
+    <div id="conn-tooltip" class="minitlp noshow"></div>
+
+    <div id="app-tooltip" class="apptlp noshow">
+        <ul></ul>
+        <div class="tb-btn">
+            <a href="#more">></a>
+        </div>
+    </div>
 
     <script src="{hostname}/js/components/jquery/dist/jquery.slim.min.js"></script>
     <script src="{hostname}/js/components/svg.js/dist/svg.min.js"></script>

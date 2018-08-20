@@ -1,41 +1,161 @@
 'use strict';
 
-function showTool(elementById, pos) {
-    var x = pos.left - 40;
-    var y = pos.top - 40;
+function AnimateLines(app, color="#6b2626") {
+    this.name = "AnimateLines";
+    var actived = false;
 
-    elementById
-        .attr('display', 'block')
-        .x(x)
-        .y(y)
-        .opacity(0)
-        .animate(200, '>')
-        .opacity(0.8)
-        .x(x+10)
-        .y(y+10);
+    var tooltip = $('#conn-tooltip');
+
+    function animateMinis(path) {
+        var length = path.length();
+        var c = app.ellipse(5, 4).fill(color).addClass('mini-ell');
+
+        var vel = 500 + length
+
+        c.animate(vel, '<>').during(function (pos, morph, eased) {
+            var p = path.pointAt(eased * length)
+
+            c.move(p.x - 2.5, p.y - 2)
+        }).after(function () {
+            c.remove();
+        });
+    }
+
+    function startAnimation(target) {
+        var path = SVG.adopt(target);
+        animateMinis(path);
+
+        var timer = setInterval(function() {
+            if (actived) {
+                animateMinis(path);
+
+                if (!actived)
+                    clearInterval(timer);
+            } else {
+                clearInterval(timer);
+            }
+        }, 100);
+    }
+
+    function transfPath(target, stk, stkw) {
+        var obj = $(target).parent().find('.conector')[0];
+        var path = SVG.adopt(obj);
+
+        path.attr({
+            stroke: stk,
+            'stroke-width': stkw
+        });
+    }
+
+    function showLabel(target, e) {
+        var txt = $(target).parent().find('text');
+
+        tooltip
+            .offset({ top : e.pageY, left: e.pageX})
+            .text(txt.text())
+            .addClass('show');
+    }
+
+    function hideLabel() {
+        tooltip
+            .offset({ top : 0, left: 0})
+            .removeClass('show');
+    }
+
+    this.setup = function() {
+        $('svg').find('.conector_h')
+            .mouseover(this.actived)
+            .mouseleave(this.desactived);
+    };
+
+    this.actived = function(e) {
+        actived = true
+
+        showLabel(this, e);
+        transfPath(this, color, 2);
+        startAnimation(this);
+    };
+
+    this.desactived = function() {
+        actived = false
+
+        hideLabel();
+        transfPath(this, '#000', 1);
+    };
 }
 
-function hiddenTool(elementById) {
-    elementById
-        .animate(200, '<')
-        .opacity(0)
-        .attr('display', 'none');
-}
 
-function getIdTool(id) {
-    return '#tool-'+id;
-}
+function AppTooltip(app) {
+    this.name = "AppTooltip";
 
+    var tooltip = $('#app-tooltip');
+
+    function showTool(target, e) {
+        var ul = tooltip.find('ul');
+        ul.empty();
+
+        $(target).find('tspan').each(function() {
+            var vl = $(this).text();
+            var ky = $(this).attr('class');
+
+            var apd = "<b>"+ky+":</b> <span>"+vl+"</span>";
+
+            ul.append("<li>"+apd+"</li>");
+        });
+
+        tooltip
+            .offset({ top : e.pageY, left: e.pageX})
+            .addClass('show');
+    }
+
+    function hiddenTool(target) {
+        tooltip
+            .removeClass('show');
+    }
+
+    function getIdTool(id) {
+        return '#tool-'+id;
+    }
+
+    this.setup = function() {
+        $('.boundaries')
+            .mouseover(this.actived)
+            .mouseleave(this.desactived);
+    };
+
+    this.actived = function(e) {
+        var id = $(this).attr('id');
+        var elID = getIdTool(id);
+        var obj = $(elID)
+
+        console.log(obj)
+        showTool(obj, e);
+    };
+
+    this.desactived = function(e) {
+        if ($(e.toElement).hasClass('apptlp')) {
+            $(e.toElement).mouseleave(function() {
+                hiddenTool();
+                $(this).off('mouseleave');
+            })
+        } else {
+            hiddenTool();
+        }
+    };
+}
 
 function AppSVG(svg) {
     this.app = null;
     
     this.setup = function() {
         this.setupZoom();
-
         this.setupSVGObject();
-        this.setupClicksTooltips();
-        this.setupLineMouseHover();
+
+        var AToolTips = new AppTooltip(this.root);
+        AToolTips.setup();
+
+        var ALines = new AnimateLines(this.app);
+        ALines.setup();
     },
 
     this.setupSVGObject = function() {
@@ -53,103 +173,13 @@ function AppSVG(svg) {
             fit: true,
             center: true,
             dblClickZoomEnabled: false,
-            maxZoom:2
+            maxZoom:4
         });
     
         $(window).resize(function() {
             panZoom.resize();
             panZoom.fit();
             panZoom.center();
-        });
-    },
-
-    this.setupClicksTooltips = function() {
-        var cache = []
-        var root = this.root;
-
-        $('.boundaries').mouseover(function() {
-            var id = $(this).attr('id');
-            var elID = getIdTool(id);
-            var elementById = root.select(elID);
-    
-            if (cache.indexOf(elID) == -1) {
-                cache.push(elID);
-                var use  = root.use('tool-'+id).addClass('tool');
-            }
-    
-            var pos = $(this).position();
-            showTool(elementById, pos);
-           
-        });
-    
-        $('.boundaries').mouseleave(function(e) {
-            var pos =  $(this).position();
-            var id = $(this).attr('id');
-    
-            if ($(e.toElement).hasClass('tool')) {
-                $(e.toElement).mouseleave(function() {
-                    var elementById = root.select(getIdTool(id));
-    
-                    hiddenTool(elementById);
-                    $(this).off('mouseleave');
-                })
-            } else {
-                var elementById = root.select(getIdTool(id));
-                hiddenTool(elementById);
-            }
-            
-        })
-    },
-
-    this.setupLineMouseHover = function() {
-        var app = this.app;
-        var time = 0;
-
-        function overed(obj) {
-            var path = SVG.adopt(obj);
-
-            for(var i=0; i<=4; i++) {
-                setTimeout(function(){
-                    var svg = document.querySelector(".svg-pan-zoom_viewport");
-                    var ed = SVG(svg)
-    
-                    var c1 = app.ellipse(5, 4).addClass('tmp');
-                    var length = path.length();
-    
-    
-                    c1.animate(1000, '<>').during(function(pos, morph, eased){
-                        var p = path.pointAt(eased * length)
-    
-                        c1.move(p.x-2.5, p.y-2)
-                    }).loop(true)
-    
-                 }, time);
-    
-                time += 300;
-
-            }
-        }
-
-        $('.conector').mouseover(function(e) {
-            var path = SVG.adopt(this);
-            path.attr({
-                stroke: '#6b2626',
-                'stroke-width': 1.5
-            });
-
-            overed(this);
-
-            
-
-        });
-
-        $('.conector').mouseleave(function(e) {
-            var path = SVG.adopt(this);
-            path.attr({
-                stroke: '#000',
-                'stroke-width': 1
-            });
-            $('.tmp').remove();
         });
     }
     

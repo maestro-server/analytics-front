@@ -14,46 +14,48 @@ b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
 }
+
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
+article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
-	display: block;
+    display: block;
 }
+
 body {
-	line-height: 1;
+    line-height: 1;
 }
+
 ol, ul {
-	list-style: none;
+    list-style: none;
 }
+
 blockquote, q {
-	quotes: none;
+    quotes: none;
 }
+
 blockquote:before, blockquote:after,
 q:before, q:after {
-	content: '';
-	content: none;
+    content: '';
+    content: none;
 }
+
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 
-
-
-
-
-/* 
+/*
     ===================== Structure
 */
 body {
@@ -68,6 +70,143 @@ svg {
     width: 100vw;
 }
 
+#info {
+    top: 0;
+    right: 0;
+    height: 100vh;
+    position: fixed;
+
+    background-color: rgba(91, 91, 91, 0.6);
+}
+
+.footer {
+    text-align: right;
+    font-size: 12px;
+    padding: 5px;
+}
+
 /* 
-    ===================== Modules
+    ===================== Layout
 */
+p, a, b, li, span {
+    font-size: 12px;
+    font-family:Arial, Helvetica, sans-serif; fill: #672064;
+}
+
+a {
+    color: #672064;
+    text-decoration: none;
+}
+
+/*
+    ===================== TooltipApps
+*/
+.apptlp {
+    border: 1px solid #a0a0a0;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 10px 15px 15px;
+    border-radius: 3px;
+    display: inline-block;
+    color: #fff;
+}
+
+.apptlp ul {
+    position: relative;
+    display: inline-block;
+    max-width: 400px;
+}
+
+.apptlp ul li {
+    padding: 6px 0;
+    border-bottom: 1px solid #fff;
+}
+
+.apptlp ul li span {
+    color: #e0e0e0;
+}
+
+.apptlp ul li:first-child {
+    border-bottom: 1px solid #fff;
+    margin-bottom: 5px;
+}
+
+.apptlp ul li:first-child b {
+    display: none
+}
+
+.apptlp ul li:first-child span {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.apptlp ul li b {
+    text-transform: capitalize;
+}
+
+.tb-btn a {
+    border-top: 1px solid #a0a0a0;
+    border-bottom: 1px solid #a0a0a0;
+    border-right: 1px solid #a0a0a0;
+
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+
+    position: absolute;
+    display: inline-block;
+    background: rgba(0, 0, 0, 0.8);
+    height: 100%;
+    width: 20px;
+    text-align: center;
+    right: -20px;
+    top: -1px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    color: #fff;
+    font-weight: bold;
+}
+
+
+
+/*
+    ===================== connector
+*/
+.conector_h, .conector {
+    cursor: crosshair;
+}
+
+.mini-ell {
+    pointer-events: none;
+}
+
+.boundaries {
+    cursor: pointer;
+}
+
+
+/*
+    ===================== Mini tooltip
+*/
+.minitlp {
+    background: #672064;
+    border-radius: 4px;
+    padding: 10px;
+    color: #fff;
+    display: inline;
+    text-transform: capitalize;
+    font-size: 14px;
+    pointer-events: none;
+}
+
+.noshow {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.show {
+    opacity: 1;
+    visibility: visible;
+}

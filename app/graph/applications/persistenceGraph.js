@@ -14,7 +14,6 @@ const ApplicationAnalytics = (Entity, PersistenceServices = DPersistenceServices
             const port = process.env.MAESTRO_PORT;
             const hostname = `${req.protocol}://${req.hostname}:${port}`;
 
-
             const data = Object.assign({}, req.body, req.user, {hostname});
             
             if (_.has(data, 'graph_id') && _.has(data, 'owner_id')) {
