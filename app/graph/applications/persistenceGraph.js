@@ -3,7 +3,7 @@
 const _ = require('lodash');
 
 const DPersistenceServices = require('core/services/PersistenceServices');
-const UploadHTML = require('graph/services/uploadHTML');
+const UploadArtifactory = require('graph/services/uploadArtifactory');
 
 
 const ApplicationAnalytics = (Entity, PersistenceServices = DPersistenceServices) => {
@@ -25,7 +25,7 @@ const ApplicationAnalytics = (Entity, PersistenceServices = DPersistenceServices
                     const owner = {'_id': _.get(data, 'owner_id')};
                     const _id = _.get(data, 'graph_id')
 
-                    UploadHTML(Entity)(out, req.user)()
+                    UploadArtifactory(Entity, _id)(out)()
                         .then(() => {
                              return PersistenceServices(Entity)
                                 .patch(_id, post, owner);

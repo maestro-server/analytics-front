@@ -7,7 +7,7 @@ const Graphs = require('../repositories/dao/graphs');
 const graphs = () => {
     const resFilled = ['_id', 'updated_at', 'status'];
 
-    const singleFilled = [...resFilled, 'msg'];
+    const singleFilled = [...resFilled, 'name', 'systems', 'clients', 'apps'];
 
     const filled = [..._.slice(singleFilled, 2)]; // delete id
 

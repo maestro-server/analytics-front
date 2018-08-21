@@ -5,14 +5,14 @@ const _ = require('lodash');
 const DUploaderService = require('core/services/UploaderService');
 
 
-module.exports = (Entity) => (out, owners) => (FUploadService = DUploaderService) => {
+module.exports = (Entity) => (out, _id, ext='html') => (FUploadService = DUploaderService) => {
 
     const UploadService = FUploadService;
 
     return new Promise((resolve, reject) => {
 
-        UploadService(Entity)
-            .uploadImage(out, owners['graph_id'])
+        UploadService(Entity, _id)
+            .uploadImage(out, ext)
             .then(resolve)
             .catch(reject);
     });

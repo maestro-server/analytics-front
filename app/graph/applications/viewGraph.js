@@ -19,9 +19,9 @@ const ApplicationReport = (Entity, PersistenceServices = DPersistenceServices) =
             PersistenceServices(Entity)
                 .findOne(id, req.user)
                 .then(notExist)
-                .then((e) => {
-                    return UploadService(Entity)
-                            .readImage(id);
+                .then(() => {
+                    return UploadService(Entity, id)
+                            .readImage();
                 })
                 .then(e => res.send(e))
                 .catch((e) => {

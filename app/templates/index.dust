@@ -13,7 +13,7 @@
 
 </head>
 <body>
-    <svg>
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
         <filter id="glow" height="300%" width="300%" x="-75%" y="-75%">
             <feMorphology operator="dilate" radius="4" in="SourceAlpha" result="thicken" />
             <feGaussianBlur in="thicken" stdDeviation="10" result="blurred" />
@@ -41,17 +41,12 @@
             </li>
 
             <li>
-                <h2>Density <p class="number">(0.3)</p></h2>
+                <h2>Servers <span class="number">(245)</span></h2>
                 
             </li>
 
             <li>
-                <h2>Servers <p class="number">(245)</p></h2>
-                
-            </li>
-
-            <li>
-                <h2>Systems <p class="number">(2)</p></h2>
+                <h2>Systems <span class="number">(2)</span></h2>
                 <ul>
                     <li><a href="#">- System1</a></li>
                     <li><a href="#">- System2</a></li>
@@ -59,7 +54,7 @@
             </li>
 
             <li>
-                <h2>Clients <p class="number">(1)</p></h2>
+                <h2>Clients <span class="number">(1)</span></h2>
                 <ul>
                     <li><a href="#">- Clients</a></li>
                 </ul>
