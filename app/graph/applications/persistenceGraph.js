@@ -21,14 +21,18 @@ const ApplicationAnalytics = (Entity, PersistenceServices = DPersistenceServices
                     if (err)
                         next(err);
 
-                    const post = {'status': 'finished', 'msg': 'Finish'};
-                    const owner = {'_id': _.get(data, 'owner_id')};
-                    const _id = _.get(data, 'graph_id')
-
-                    UploadArtifactory(Entity, _id)(out)()
+                    const {graph_id, payload, owner_id} = data;
+                    const owner = {'_id': owner_id};
+                    
+                    Promise.all([
+                        UploadArtifactory(Entity)(out, graph_id)(),
+                        UploadArtifactory(Entity)(payload, graph_id, 'svg')()
+                        ])
                         .then(() => {
-                             return PersistenceServices(Entity)
-                                .patch(_id, post, owner);
+                            const post = {'status': 'finished', 'msg': 'Finish'};
+
+                            return PersistenceServices(Entity)
+                                    .patch(graph_id, post, owner);
                         })
                         .then(e => res.json(e))
                         .catch(next);
