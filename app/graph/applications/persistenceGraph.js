@@ -13,8 +13,9 @@ const ApplicationAnalytics = (Entity, PersistenceServices = DPersistenceServices
         create(req, res, next) {
             const port = process.env.MAESTRO_PORT;
             const hostname = `${req.protocol}://${req.hostname}:${port}`;
+            const api_url = process.env.API_URL || 'http://localhost:8888';
 
-            const data = Object.assign({}, req.body, req.user, {hostname});
+            const data = Object.assign({}, req.body, req.user, {hostname}, {api_url});
             
             if (_.has(data, 'graph_id') && _.has(data, 'owner_id')) {
                 res.render('index', data, (err, out) => {

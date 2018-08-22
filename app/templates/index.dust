@@ -10,6 +10,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" type="text/css" href="{hostname}/css/main.css"></link>
+  <meta name="api_url" content="{api_url}">
+  <meta name="id" content="{graph_id}">
 
 </head>
 <body>
@@ -30,39 +32,37 @@
         {payload|s}
     </div>
 
-    <div id="info">
+    <div id="info" class="info_box flex">
         <ul class="menu">
-            <li>
-                <h1>MyTitle</h1>
+            <li class="title">
+                <h1></h1>
             </li>
-
-            <li>
-                <h2>Histograms</h2>
+            <li class="histograms">
+                <h2>Histogram</h2>
+                <div class="hist"></div>
             </li>
-
-            <li>
-                <h2>Servers <span class="number">(245)</span></h2>
-                
+            <li class="info">
+                <h2>Info</h2>
+                <ol></ol>
             </li>
-
-            <li>
+            <li class="families">
+                <h2>Types</h2>
+                <ol></ol>
+            </li>
+            <li class="system">
                 <h2>Systems <span class="number">(2)</span></h2>
-                <ul>
-                    <li><a href="#">- System1</a></li>
-                    <li><a href="#">- System2</a></li>
-                </ul>
+                <ul></ul>
             </li>
-
-            <li>
+            <li class="clients">
                 <h2>Clients <span class="number">(1)</span></h2>
-                <ul>
-                    <li><a href="#">- Clients</a></li>
-                </ul>
+                <ul></ul>
             </li>
         </ul>
 
         <a href="http://maestroserver.io" target="_blank" class="footer">Powered by<br/> Maestro Server</a>
     </div>
+
+    <div id="infobox" class="info_box"></div>
 
     <div id="conn-tooltip" class="minitlp noshow"></div>
 
@@ -73,9 +73,53 @@
         </div>
     </div>
 
+    <script id="tpl_clients" type="text/template">
+        <div class="wrapper flex">
+            <div class="half">
+                <h1>{~lb}{~lb}name{~rb}{~rb}</h1>
+
+                <ul>
+                    <li>
+                        <p>{~lb}{~lb}description{~rb}{~rb}</p>
+                    </li>
+                    <li>
+                        <h2>Contacts</h2>
+                        <ol>
+                        {~lb}{~lb}#contacts{~rb}{~rb}
+                            <li><b>{~lb}{~lb}channel{~rb}{~rb}:</b> {~lb}{~lb}value{~rb}{~rb}</li>
+                        {~lb}{~lb}/contacts{~rb}{~rb}
+                        </ol>
+                    </li>
+                    <li>
+                        <h2>Tags</h2>
+                        <ol>
+                        {~lb}{~lb}#tags{~rb}{~rb}
+                            <li><b>{~lb}{~lb}key{~rb}{~rb}:</b> {~lb}{~lb}value{~rb}{~rb}</li>
+                        {~lb}{~lb}/tags{~rb}{~rb}
+                        </ol>
+                    </li>
+                    <li>
+                        <h2>Owner</h2>
+                        <p>{~lb}{~lb}owner.email{~rb}{~rb}</p>
+                    </li>
+                    <li>
+                        <h2>Update at</h2>
+                        <p>{~lb}{~lb}updated_at{~rb}{~rb}</p>
+                    </li>
+                    <li>
+                        <h2>Create at</h2>
+                        <p>{~lb}{~lb}created_at{~rb}{~rb}</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </script>
+
     <script src="{hostname}/js/components/jquery/dist/jquery.min.js"></script>
     <script src="{hostname}/js/components/svg.js/dist/svg.min.js"></script>
     <script src="{hostname}/js/components/svg-pan-zoom/dist/svg-pan-zoom.min.js"></script>
+    <script src="{hostname}/js/components/lodash/dist/lodash.min.js"></script>
+    <script src="{hostname}/js/components/mustache.js/mustache.min.js"></script>
     <script src="{hostname}/js/main.js"></script>
 
 </body>

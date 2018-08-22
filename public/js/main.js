@@ -1,5 +1,10 @@
 'use strict';
 
+
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
 function AnimateLines(app, color="#6b2626") {
     this.name = "AnimateLines";
     var actived = false;
@@ -150,29 +155,144 @@ function AppTooltip(app) {
     };
 }
 
-function AppSVG(svg) {
-    this.app = null;
+function MetaInfo(data) {
+
+    var obj = {
+        'api': $('meta[name=api_url]').attr("content"),
+        'id': $('meta[name=id]').attr("content")
+    }
+    return _.get(obj, data);
+}
+
+function ApiRequest(fn, query, uri='graphs') {
+    var urlParams = new URLSearchParams(window.location.search);
+    var jwt = urlParams.get('jwt')
+
+    $.ajax({
+        url: MetaInfo('api') + '/' + uri + '/' + query,
+        headers: {
+            'Authorization': 'jwt ' + jwt
+        }
+    })
+    .fail(function() {
+        alert( "error" );
+    })
+    .done(fn)
+    .always(function() {
+        
+    });
+}
+
+
+function IterItem(base, iter, ftl, wrp='ol', result=[]) {
+    var obj = $(base).find(wrp);
+
+    function createBox(data) {
+        var template = $('#tpl_clients').html();
+        var html = Mustache.to_html(template, data);
     
-    this.setup = function() {
-        this.setupZoom();
-        this.setupSVGObject();
+        $('#infobox')
+            .html(html)
+            .css({'left': 156})
+            .addClass('opened');
+    }
 
-        var AToolTips = new AppTooltip(this.root);
-        AToolTips.setup();
+    this._lookup = function(key, value, result=[]) {
+        key = key.capitalize();
+        var fvalue = _.get(result, value);
 
-        var ALines = new AnimateLines(this.app);
-        ALines.setup();
-    },
+        if (value)
+            obj.append('<li><b>'+key+'</b>: '+fvalue+'</li>');
+    };
 
-    this.setupSVGObject = function() {
-        var qapp = document.querySelector("svg .svg-pan-zoom_viewport");
-        this.app = SVG.adopt(qapp);
+    this._single = function (key, value, result=[]) {
+        key = key.capitalize();
 
-        var qobj = document.querySelector("svg");
-        this.root = SVG.adopt(qobj);
-    },
+        if (value)
+            obj.append('<li><b>'+key+'</b>: '+value+'</li>');
 
-    this.setupZoom = function () {
+    };
+
+    this._link = function (key, value, result=[]) {
+        var id = _.get(value, '_id');
+        var name = _.get(value, 'name').capitalize();
+        var type = base.replace('.', '')
+
+        if (value)
+            obj.append('<li><a href="#" data-id='+id+' data-type='+type+' class="get_info">'+name+'</a></li>');
+    };
+
+    this.info_box = function() {
+        var id = $(this).data('id');
+        var type = $(this).data('type');
+
+        ApiRequest(createBox, id, type);
+    };
+
+    $('#infobox').mouseleave(function() {
+        $(this).css({'left': -300});
+    }); 
+
+    for (var key in iter) {
+        var filter = iter[key];
+        this[ftl](key, filter, result);
+    }
+
+    $('#info').find('.get_info').click(this.info_box);
+}
+
+function MenuBar() {
+
+    var mapper = {
+        '.info': {
+            'density': 'info.density',
+            'conections': 'info.conections',
+            'servers': 'iservers.total',
+            'apps': 'ifamilies.total'
+        }
+    }
+
+    function hist(result) {
+        var hist = _.get(result, 'info.histograms');
+
+        for (var ht in hist) {
+            var v = hist[ht];
+            var h = v * 10;
+            $('.hist').append('<div style="height: '+h+'px"><p>'+v+'</p></div>');
+        }
+    };
+
+    this.open = function(result) {
+    
+        for (var key in mapper) {
+            var value = mapper[key];
+            new IterItem(key, value, '_lookup', 'ol', result);
+        }
+
+        new IterItem('.families', _.get(result, 'ifamilies.items'), '_single', 'ol');
+        new IterItem('.system',  _.get(result, 'isystems.items'), '_link', 'ul');
+        new IterItem('.clients',  _.get(result, 'iclients.items'), '_link', 'ul');
+        
+        hist(result);
+        $('.title').find('h1').text(_.get(result, 'name'));
+        $('#info').addClass('opened');
+    };
+
+    this.setupSlideToggle = function () {
+        $('.menu li').hover(function(){
+            $(this).find('ul').slideToggle('fast');
+        });
+    };
+
+    this.setup = function () {
+        this.setupSlideToggle();
+        ApiRequest(this.open, MetaInfo('id'));
+    };
+}
+
+function ZoomPanSVG() {
+
+    this.setup = function () {
         var panZoom = svgPanZoom('#graph', {
             zoomEnabled: true,
             controlIconsEnabled: true,
@@ -188,8 +308,31 @@ function AppSVG(svg) {
             panZoom.center();
         });
     }
-    
 }
+
+function AppSVG(svg) {
+    this.app = null;
+    this.root = null;
+
+    this.setupSVGObject = function() {
+        var qapp = document.querySelector("svg .svg-pan-zoom_viewport");
+        this.app = SVG.adopt(qapp);
+
+        var qobj = document.querySelector("svg");
+        this.root = SVG.adopt(qobj);
+    }
+
+    this.setup = function() {
+        new ZoomPanSVG().setup();
+
+        this.setupSVGObject();
+
+        new AppTooltip(this.root).setup();
+        new AnimateLines(this.app).setup();
+        new MenuBar().setup();
+    }
+}
+
 
 
 
@@ -197,8 +340,4 @@ function AppSVG(svg) {
 $(document).ready(function() {
     var app = new AppSVG();
     app.setup();
-
-    $('.menu li').hover(function(){
-        $(this).find('ul').slideToggle('fast');
-    });
 });
