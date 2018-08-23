@@ -1,3 +1,4 @@
 {
-    "directory" : "public/js/components"
+    "directory" : "public/js/components",
+    "registry": "https://registry.bower.io"
 }
