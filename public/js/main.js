@@ -184,43 +184,22 @@ function ApiRequest(fn, query, uri='graphs') {
 }
 
 
-function IterItem(base, iter, ftl, wrp='ol', result=[]) {
-    var obj = $(base).find(wrp);
+function CreateBox() {
 
     function createBox(data) {
         var template = $('#tpl_clients').html();
+
+        data['hasContacts'] = function() {
+            return _.get(data, 'contacts');
+        }
+
         var html = Mustache.to_html(template, data);
-    
+
         $('#infobox')
             .html(html)
             .css({'left': 156})
             .addClass('opened');
     }
-
-    this._lookup = function(key, value, result=[]) {
-        key = key.capitalize();
-        var fvalue = _.get(result, value);
-
-        if (value)
-            obj.append('<li><b>'+key+'</b>: '+fvalue+'</li>');
-    };
-
-    this._single = function (key, value, result=[]) {
-        key = key.capitalize();
-
-        if (value)
-            obj.append('<li><b>'+key+'</b>: '+value+'</li>');
-
-    };
-
-    this._link = function (key, value, result=[]) {
-        var id = _.get(value, '_id');
-        var name = _.get(value, 'name').capitalize();
-        var type = base.replace('.', '')
-
-        if (value)
-            obj.append('<li><a href="#" data-id='+id+' data-type='+type+' class="get_info">'+name+'</a></li>');
-    };
 
     this.info_box = function() {
         var id = $(this).data('id');
@@ -231,61 +210,55 @@ function IterItem(base, iter, ftl, wrp='ol', result=[]) {
 
     $('#infobox').mouseleave(function() {
         $(this).css({'left': -300});
-    }); 
+    });
 
-    for (var key in iter) {
-        var filter = iter[key];
-        this[ftl](key, filter, result);
-    }
-
-    $('#info').find('.get_info').click(this.info_box);
+    $('#menu').find('.get_info').click(this.info_box);
 }
 
 function MenuBar() {
 
-    var mapper = {
-        '.info': {
-            'density': 'info.density',
-            'conections': 'info.conections',
-            'servers': 'iservers.total',
-            'apps': 'ifamilies.total'
-        }
-    }
-
     function hist(result) {
+        var arr = []
         var hist = _.get(result, 'info.histograms');
 
         for (var ht in hist) {
             var v = hist[ht];
             var h = v * 10;
-            $('.hist').append('<div style="height: '+h+'px"><p>'+v+'</p></div>');
-        }
-    };
+            arr.push({'h': h, 'value': v});
 
-    this.open = function(result) {
-    
-        for (var key in mapper) {
-            var value = mapper[key];
-            new IterItem(key, value, '_lookup', 'ol', result);
         }
 
-        new IterItem('.families', _.get(result, 'ifamilies.items'), '_single', 'ol');
-        new IterItem('.system',  _.get(result, 'isystems.items'), '_link', 'ul');
-        new IterItem('.clients',  _.get(result, 'iclients.items'), '_link', 'ul');
-        
-        hist(result);
-        $('.title').find('h1').text(_.get(result, 'name'));
-        $('#info').addClass('opened');
+        return arr
     };
 
-    this.setupSlideToggle = function () {
+    function setupSlideToggle() {
         $('.menu li').hover(function(){
-            $(this).find('ul').slideToggle('fast');
+            $(this).find('ul').stop().slideToggle('fast');
         });
     };
 
+    function map_families(k, v) {
+        return {'name': v, 'qtd': k};
+    }
+
+    this.open = function(result) {
+
+        result['families'] = _.map(_.get(result, 'ifamilies.items'), map_families);
+        result['hist'] = hist(result);
+
+        var template = $('#tpl_menu').html();
+        var html = Mustache.to_html(template, result);
+
+        $('#menu').html(html);
+
+        new CreateBox();
+        setupSlideToggle();
+        $('#menu').addClass('opened');
+    };
+
+
+
     this.setup = function () {
-        this.setupSlideToggle();
         ApiRequest(this.open, MetaInfo('id'));
     };
 }

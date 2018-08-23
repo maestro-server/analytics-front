@@ -32,37 +32,9 @@
         {payload|s}
     </div>
 
-    <div id="info" class="info_box flex">
-        <ul class="menu">
-            <li class="title">
-                <h1></h1>
-            </li>
-            <li class="histograms">
-                <h2>Histogram</h2>
-                <div class="hist"></div>
-            </li>
-            <li class="info">
-                <h2>Info</h2>
-                <ol></ol>
-            </li>
-            <li class="families">
-                <h2>Types</h2>
-                <ol></ol>
-            </li>
-            <li class="system">
-                <h2>Systems <span class="number">(2)</span></h2>
-                <ul></ul>
-            </li>
-            <li class="clients">
-                <h2>Clients <span class="number">(1)</span></h2>
-                <ul></ul>
-            </li>
-        </ul>
 
-        <a href="http://maestroserver.io" target="_blank" class="footer">Powered by<br/> Maestro Server</a>
-    </div>
-
-    <div id="infobox" class="info_box"></div>
+    <div id="infobox" class="info_box flex"></div>
+    <div id="menu" class="info_box flex"></div>
 
     <div id="conn-tooltip" class="minitlp noshow"></div>
 
@@ -73,45 +45,98 @@
         </div>
     </div>
 
-    <script id="tpl_clients" type="text/template">
-        <div class="wrapper flex">
-            <div class="half">
+    <script id="tpl_menu" type="text/template">
+        <ul class="menu">
+            <li class="title">
                 <h1>{~lb}{~lb}name{~rb}{~rb}</h1>
-
+            </li>
+            <li class="histograms">
+                <h2>Histogram</h2>
+                <div class="hist">
+                    {~lb}{~lb}#hist{~rb}{~rb}
+                        <div style="height: {~lb}{~lb}h{~rb}{~rb}px"><p>{~lb}{~lb}value{~rb}{~rb}</p></div>
+                    {~lb}{~lb}/hist{~rb}{~rb}
+                </div>
+            </li>
+            <li class="info">
+                <h2>Info</h2>
+                <ol>
+                    <li><b>Density:</b> {~lb}{~lb}info.density{~rb}{~rb}</li>
+                    <li><b>Conections:</b> {~lb}{~lb}info.conections{~rb}{~rb}</li>
+                    <li><b>Servers:</b> {~lb}{~lb}iservers.total{~rb}{~rb}</li>
+                    <li><b>Apps:</b> {~lb}{~lb}ifamilies.total{~rb}{~rb}</li>
+                </ol>
+            </li>
+            <li class="families">
+                <h2>Types</h2>
+                <ol>
+                    {~lb}{~lb}#families{~rb}{~rb}
+                    <li><b>{~lb}{~lb}name{~rb}{~rb}:</b> {~lb}{~lb}qtd{~rb}{~rb}</li>
+                    {~lb}{~lb}/families{~rb}{~rb}
+                </ol>
+            </li>
+            <li class="system">
+                <h2>Systems <span class="number">({~lb}{~lb}isystems.total{~rb}{~rb})</span></h2>
                 <ul>
-                    <li>
-                        <p>{~lb}{~lb}description{~rb}{~rb}</p>
-                    </li>
-                    <li>
-                        <h2>Contacts</h2>
-                        <ol>
-                        {~lb}{~lb}#contacts{~rb}{~rb}
-                            <li><b>{~lb}{~lb}channel{~rb}{~rb}:</b> {~lb}{~lb}value{~rb}{~rb}</li>
-                        {~lb}{~lb}/contacts{~rb}{~rb}
-                        </ol>
-                    </li>
-                    <li>
-                        <h2>Tags</h2>
-                        <ol>
-                        {~lb}{~lb}#tags{~rb}{~rb}
-                            <li><b>{~lb}{~lb}key{~rb}{~rb}:</b> {~lb}{~lb}value{~rb}{~rb}</li>
-                        {~lb}{~lb}/tags{~rb}{~rb}
-                        </ol>
-                    </li>
-                    <li>
-                        <h2>Owner</h2>
-                        <p>{~lb}{~lb}owner.email{~rb}{~rb}</p>
-                    </li>
-                    <li>
-                        <h2>Update at</h2>
-                        <p>{~lb}{~lb}updated_at{~rb}{~rb}</p>
-                    </li>
-                    <li>
-                        <h2>Create at</h2>
-                        <p>{~lb}{~lb}created_at{~rb}{~rb}</p>
-                    </li>
+                    {~lb}{~lb}#isystems.items{~rb}{~rb}
+                    <li><a href="#" data-id="{~lb}{~lb}_id{~rb}{~rb}" data-type="system" class="get_info">{~lb}{~lb}name{~rb}{~rb}</a></li>
+                    {~lb}{~lb}/isystems.items{~rb}{~rb}
                 </ul>
-            </div>
+            </li>
+            <li class="clients">
+                <h2>Clients <span class="number">({~lb}{~lb}iclients.total{~rb}{~rb})</span></h2>
+                <ul>
+                    {~lb}{~lb}#iclients.items{~rb}{~rb}
+                    <li><a href="#" data-id="{~lb}{~lb}_id{~rb}{~rb}" data-type="clients" class="get_info">{~lb}{~lb}name{~rb}{~rb}</a></li>
+                    {~lb}{~lb}/iclients.items{~rb}{~rb}
+                </ul>
+            </li>
+        </ul>
+
+        <a href="http://maestroserver.io" target="_blank" class="footer">Powered by<br/> Maestro Server</a>
+    </script>
+
+    <script id="tpl_clients" type="text/template">
+        <div class="half">
+            <h1>{~lb}{~lb}name{~rb}{~rb}</h1>
+
+            <ul>
+                <li>
+                    <p>{~lb}{~lb}description{~rb}{~rb}</p>
+                </li>
+
+                {~lb}{~lb}#hasContacts{~rb}{~rb}
+                <li>
+                    <h2>Contacts</h2>
+                    <ol>
+                    {~lb}{~lb}#contacts{~rb}{~rb}
+                        <li><b>{~lb}{~lb}channel{~rb}{~rb}:</b> {~lb}{~lb}value{~rb}{~rb}</li>
+                    {~lb}{~lb}/contacts{~rb}{~rb}
+                    </ol>
+                </li>
+                {~lb}{~lb}/hasContacts{~rb}{~rb}
+
+                <li>
+                    <h2>Tags</h2>
+                    <ol>
+                    {~lb}{~lb}#tags{~rb}{~rb}
+                        <li><b>{~lb}{~lb}key{~rb}{~rb}:</b> {~lb}{~lb}value{~rb}{~rb}</li>
+                    {~lb}{~lb}/tags{~rb}{~rb}
+                    </ol>
+                </li>
+                <li>
+                    <h2>Owner</h2>
+                    <p>{~lb}{~lb}owner.email{~rb}{~rb}</p>
+                </li>
+                <li>
+                    <h2>Update at</h2>
+                    <p>{~lb}{~lb}updated_at{~rb}{~rb}</p>
+                </li>
+                <li>
+                    <h2>Create at</h2>
+                    <p>{~lb}{~lb}created_at{~rb}{~rb}</p>
+                </li>
+            </ul>
         </div>
     </script>
 

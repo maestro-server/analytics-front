@@ -110,7 +110,7 @@ body {
     height: 100vh;
     position: fixed;
 
-    background-color: rgba(91, 91, 91, 0.6);
+    background-color: rgba(91, 91, 91, 0.7);
     padding: 10px 20px 10px 16px;
 
     width: 120px;
@@ -202,6 +202,9 @@ body {
     font-size: 11px;
 }
 
+#menu {
+    z-index: 10;
+}
 
 #infobox {
     width: 200px;
