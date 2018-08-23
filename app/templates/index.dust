@@ -35,15 +35,25 @@
 
     <div id="infobox" class="info_box flex"></div>
     <div id="menu" class="info_box flex"></div>
-
     <div id="conn-tooltip" class="minitlp noshow"></div>
+    <div id="app-tooltip" class="apptlp noshow"></div>
+    <div id="servers-tooltip" class="apptlp noshow"></div>
 
-    <div id="app-tooltip" class="apptlp noshow">
-        <ul></ul>
-        <div class="tb-btn">
-            <a href="#more">></a>
-        </div>
-    </div>
+    <script id="tpl_tooltip" type="text/template">
+        <a href="#more" data-id="{~lb}{~lb}id{~rb}{~rb}">
+            <ul>
+                {~lb}{~lb}#app{~rb}{~rb}
+                <li>
+                    <b>{~lb}{~lb}key{~rb}{~rb}:</b> 
+                    <span>{~lb}{~lb}value{~rb}{~rb}</span>
+                </li>
+                {~lb}{~lb}/app{~rb}{~rb}
+            </ul>
+            <div class="tb-btn">
+                <span>></span>
+            </div>
+        </a>
+    </script>
 
     <script id="tpl_menu" type="text/template">
         <ul class="menu">
@@ -96,14 +106,87 @@
         <a href="http://maestroserver.io" target="_blank" class="footer">Powered by<br/> Maestro Server</a>
     </script>
 
-    <script id="tpl_clients" type="text/template">
+    <script id="tpl_info" type="text/template">
         <div class="half">
             <h1>{~lb}{~lb}name{~rb}{~rb}</h1>
 
+            {~lb}{~lb}#family{~rb}{~rb}
+            <p class="tag tag-primary">{~lb}{~lb}family{~rb}{~rb}</p>
+            {~lb}{~lb}/family{~rb}{~rb}
+
+            {~lb}{~lb}#environment{~rb}{~rb}
+            <span class="tag">{~lb}{~lb}environment{~rb}{~rb}</span> 
+            {~lb}{~lb}/environment{~rb}{~rb}
+
+            {~lb}{~lb}#provider{~rb}{~rb}
+            <span class="tag">{~lb}{~lb}provider{~rb}{~rb}</span> 
+            {~lb}{~lb}/provider{~rb}{~rb}
+
+            {~lb}{~lb}#engine{~rb}{~rb}
+            <span class="tag">{~lb}{~lb}engine{~rb}{~rb}</span> 
+            {~lb}{~lb}/engine{~rb}{~rb}
+
+            {~lb}{~lb}#status{~rb}{~rb}
+            <span class="tag">{~lb}{~lb}status{~rb}{~rb}</span> 
+            {~lb}{~lb}/status{~rb}{~rb}
+
             <ul>
                 <li>
+                    {~lb}{~lb}#description{~rb}{~rb}
                     <p>{~lb}{~lb}description{~rb}{~rb}</p>
+                    {~lb}{~lb}/description{~rb}{~rb}
                 </li>
+
+                {~lb}{~lb}#language{~rb}{~rb}
+                <li>
+                    <h2>Language</h2>
+                    <ol>
+                        <li><b>{~lb}{~lb}language{~rb}{~rb}:</b></li>
+                    </ol>
+                </li>
+                {~lb}{~lb}/language{~rb}{~rb}
+
+                {~lb}{~lb}#cluster{~rb}{~rb}
+                <li>
+                    <h2>Cluster</h2>
+                    <ol>
+                        <li><b>{~lb}{~lb}cluster{~rb}{~rb}:</b></li>
+                    </ol>
+                </li>
+                {~lb}{~lb}/cluster{~rb}{~rb}
+
+                {~lb}{~lb}#datacenters{~rb}{~rb}
+                <li>
+                    <h2>Datacenter</h2>
+                    <ol>
+                        <li>
+                            <b>{~lb}{~lb}provider{~rb}{~rb}</b> <br>
+
+                            {~lb}{~lb}#region{~rb}{~rb}
+                            <span class="tag">{~lb}{~lb}region{~rb}{~rb}</span> 
+                            {~lb}{~lb}/region{~rb}{~rb}
+
+                            {~lb}{~lb}#zone{~rb}{~rb}
+                            <span class="tag">{~lb}{~lb}zone{~rb}{~rb}</span> 
+                            {~lb}{~lb}/zone{~rb}{~rb}
+                        </li>
+                    </ol>
+                </li>
+                {~lb}{~lb}/datacenters{~rb}{~rb}
+
+                {~lb}{~lb}#hasEntry{~rb}{~rb}
+                <li>
+                    <h2>Entry Apps</h2>
+                    <ol>
+                    {~lb}{~lb}#entry{~rb}{~rb}
+                        <li>
+                            {~lb}{~lb}name{~rb}{~rb} by <b>{~lb}{~lb}endpoint{~rb}{~rb}</b> <br>
+                            <span class="tag">{~lb}{~lb}family{~rb}{~rb}</span> <span class="tag">{~lb}{~lb}environment{~rb}{~rb}</span>
+                        </li>
+                    {~lb}{~lb}/entry{~rb}{~rb}
+                    </ol>
+                </li>
+                {~lb}{~lb}/hasEntry{~rb}{~rb}
 
                 {~lb}{~lb}#hasContacts{~rb}{~rb}
                 <li>
@@ -116,6 +199,7 @@
                 </li>
                 {~lb}{~lb}/hasContacts{~rb}{~rb}
 
+                {~lb}{~lb}#hasTags{~rb}{~rb}
                 <li>
                     <h2>Tags</h2>
                     <ol>
@@ -124,6 +208,8 @@
                     {~lb}{~lb}/tags{~rb}{~rb}
                     </ol>
                 </li>
+                {~lb}{~lb}/hasTags{~rb}{~rb}
+
                 <li>
                     <h2>Owner</h2>
                     <p>{~lb}{~lb}owner.email{~rb}{~rb}</p>

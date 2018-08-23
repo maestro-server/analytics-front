@@ -106,7 +106,7 @@ body {
 
 .info_box {
     top: 0;
-    left: -120px;
+    left: -160px;
     height: 100vh;
     position: fixed;
 
@@ -227,12 +227,33 @@ body {
     flex-wrap: wrap;
 }
 
+.tag {
+    border-radius: 2px;
+    border: 1px solid #a0a0a0;
+    padding: 2px;
+    margin-top: 4px;
+    position: relative;
+    display: inline-block;
+    background: #a3a3a3;
+    color: #fff;
+}
+
+.tag-primary {
+    background: #672064;
+    font-size: 14px;
+    border-radius: 2px;
+    border: none;
+    padding: 4px 0;
+    width: 100%;
+    text-align: center;
+}
+
 /*
     ===================== TooltipApps
 */
 .apptlp {
     border: 1px solid #767676;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.7);
     padding: 10px 15px 15px;
     border-radius: 3px;
     display: inline-block;
@@ -242,7 +263,7 @@ body {
 .apptlp ul {
     position: relative;
     display: inline-block;
-    max-width: 280px;
+    max-width: 200px;
 }
 
 .apptlp ul li {
@@ -273,7 +294,11 @@ body {
     text-transform: capitalize;
 }
 
-.tb-btn a {
+.apptlp a {
+    color: inherit;
+}
+
+.tb-btn span {
     border-top: 1px solid #a0a0a0;
     border-bottom: 1px solid #a0a0a0;
     border-right: 1px solid #a0a0a0;
