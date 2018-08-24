@@ -226,12 +226,7 @@
         </div>
     </script>
 
-    <script src="{hostname}/js/components/jquery/dist/jquery.min.js"></script>
-    <script src="{hostname}/js/components/svg.js/dist/svg.min.js"></script>
-    <script src="{hostname}/js/components/svg-pan-zoom/dist/svg-pan-zoom.min.js"></script>
-    <script src="{hostname}/js/components/lodash/dist/lodash.min.js"></script>
-    <script src="{hostname}/js/components/mustache.js/mustache.min.js"></script>
-    <script src="{hostname}/js/main.js"></script>
+    <script src="{hostname}/js/app.js"></script>
 
 </body>
 </html>

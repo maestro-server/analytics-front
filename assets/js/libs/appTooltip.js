@@ -1,0 +1,109 @@
+'use strict';
+
+var $ = require('jquery');
+var FactoryTemplate = require('./factoryTemplate.js');
+var ApiRequest = require('./apiRequest.js');
+
+
+function AppTooltip(app) {
+    var tooltip = $('#app-tooltip');
+
+    function eachTspan(target) {
+        var app = []
+        $(target).find('tspan').each(function() {
+            app.push({
+                'key':  $(this).attr('class'), 
+                'value': $(this).text()
+            });
+        });
+        return app;
+    }
+
+    function showTool(target, e) {
+        var data = {
+            'app': eachTspan(target),
+            'id': $(target).attr('id')
+        };
+
+        FactoryTemplate('#tpl_tooltip', tooltip, data)
+            .offset({ top : e.pageY -50, left: e.pageX})
+            .addClass('show');
+    }
+
+    function getIdTool(id) {
+        return '#tool-'+id;
+    }
+
+    function activeLines(id) {
+        $('.conn-'+id).trigger('mouseenter');
+    }
+
+    function desactiveLines(id) {
+        $('.conn-'+id).trigger('mouseleave');
+    }
+
+    function hiddenTool(target) {
+        var id = $(target).attr('id');
+
+        desactiveLines(id);
+        target.removeClass('glowing');
+
+        tooltip
+            .removeClass('show');
+    }
+
+    function cal_wid(that) {
+        var wid = $(that).width() + $(that).position().left + 50;
+        var lim = $( window ).width() - $(that).width() - 110;
+
+        if (wid > lim)
+            wid = $(that).position().left - $(that).width() - 140;
+        
+        return wid;
+    }
+
+    this.setup = function() {
+        $('.boundaries')
+            .mouseover(this.actived)
+            .mouseleave(this.desactived);
+    };
+
+    this.actived = function(e) {
+        var id = $(this).attr('id');
+        var elID = getIdTool(id);
+        var obj = $(elID);
+
+        showTool(obj, e);
+        activeLines(id);
+        $(this).addClass('glowing');
+    };
+
+    this.desactived = function(e) {
+        var that = $(this);
+
+        if ($(e.toElement).hasClass('apptlp')) {
+            $(e.toElement).mouseleave(function() {
+                hiddenTool(that);
+                $(this).off('mouseleave');
+            });
+        } else {
+            hiddenTool(that);
+        }
+    };
+
+    $('#app-tooltip').click(function(e) {
+        var id = $(this).find('a').data('id');
+        id = id.replace('tool-', '');
+
+        var that = this;
+
+        ApiRequest(function(data){
+            var wid = cal_wid(that);
+ 
+            FactoryTemplate('#tpl_info', $('#infobox'), data)
+                .css({'left': wid})
+                .addClass('opened');
+        }, id, 'applications');        
+    });
+}
+module.exports = AppTooltip;
