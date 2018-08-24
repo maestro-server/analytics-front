@@ -5,8 +5,45 @@ String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
+function FactoryTemplate(id, obj, data) {
+    var template = $(id).html();
+    var html = Mustache.to_html(template, data);
+
+    obj.html(html);
+    return obj;
+}
+
+function CreateBox() {
+
+    function check(data, filter) {
+        return _.get(data, filter);
+    }
+
+    function createBox(data) {
+        data['hasContacts'] = check(data, 'contacts');
+        data['hasEntry'] = check(data, 'entry');
+        data['hasTags'] = check(data, 'tags');
+        
+       FactoryTemplate('#tpl_info', $('#infobox'), data)
+            .css({'left': 156})
+            .addClass('opened');
+    }
+
+    this.info_box = function() {
+        var id = $(this).data('id');
+        var type = $(this).data('type');
+
+        ApiRequest(createBox, id, type);
+    };
+
+    $('#infobox').mouseleave(function() {
+        $(this).css({'left': -300});
+    });
+
+    $('#menu').find('.get_info').click(this.info_box);
+}
+
 function AnimateLines(app, color="#6b2626") {
-    this.name = "AnimateLines";
     var actived = false;
 
     var tooltip = $('#conn-tooltip');
@@ -74,15 +111,17 @@ function AnimateLines(app, color="#6b2626") {
     };
 
     this.actived = function(e) {
-        actived = true
+        actived = true;
 
-        showLabel(this, e);
+        if (!_.get(e, 'isTrigger'))
+            showLabel(this, e);
+        
         transfPath(this, color, 2);
         startAnimation(this);
     };
 
     this.desactived = function() {
-        actived = false
+        actived = false;
 
         hideLabel();
         transfPath(this, '#000', 1);
@@ -90,38 +129,62 @@ function AnimateLines(app, color="#6b2626") {
 }
 
 
-function AppTooltip(app) {
-    this.name = "AppTooltip";
 
+function AppTooltip(app) {
     var tooltip = $('#app-tooltip');
 
-    function showTool(target, e) {
-        var ul = tooltip.find('ul');
-        ul.empty();
-
+    function eachTspan(target) {
+        var app = []
         $(target).find('tspan').each(function() {
-            var vl = $(this).text();
-            var ky = $(this).attr('class');
-
-            var apd = "<b>"+ky+":</b> <span>"+vl+"</span>";
-
-            ul.append("<li>"+apd+"</li>");
+            app.push({
+                'key':  $(this).attr('class'), 
+                'value': $(this).text()
+            });
         });
+        return app;
+    }
 
-        tooltip
-            .offset({ top : e.pageY, left: e.pageX})
+    function showTool(target, e) {
+        var data = {
+            'app': eachTspan(target),
+            'id': $(target).attr('id')
+        };
+
+        FactoryTemplate('#tpl_tooltip', tooltip, data)
+            .offset({ top : e.pageY -50, left: e.pageX})
             .addClass('show');
     }
 
+    function getIdTool(id) {
+        return '#tool-'+id;
+    }
+
+    function activeLines(id) {
+        $('.conn-'+id).trigger('mouseenter');
+    }
+
+    function desactiveLines(id) {
+        $('.conn-'+id).trigger('mouseleave');
+    }
+
     function hiddenTool(target) {
+        var id = $(target).attr('id');
+
+        desactiveLines(id);
         target.removeClass('glowing');
 
         tooltip
             .removeClass('show');
     }
 
-    function getIdTool(id) {
-        return '#tool-'+id;
+    function cal_wid(that) {
+        var wid = $(that).width() + $(that).position().left + 50;
+        var lim = $( window ).width() - $(that).width() - 110;
+
+        if (wid > lim)
+            wid = $(that).position().left - $(that).width() - 140;
+        
+        return wid;
     }
 
     this.setup = function() {
@@ -133,9 +196,10 @@ function AppTooltip(app) {
     this.actived = function(e) {
         var id = $(this).attr('id');
         var elID = getIdTool(id);
-        var obj = $(elID)
+        var obj = $(elID);
 
         showTool(obj, e);
+        activeLines(id);
         $(this).addClass('glowing');
     };
 
@@ -150,9 +214,22 @@ function AppTooltip(app) {
         } else {
             hiddenTool(that);
         }
-
-        
     };
+
+    $('#app-tooltip').click(function(e) {
+        var id = $(this).find('a').data('id');
+        id = id.replace('tool-', '');
+
+        var that = this;
+
+        ApiRequest(function(data){
+            var wid = cal_wid(that);
+ 
+            FactoryTemplate('#tpl_info', $('#infobox'), data)
+                .css({'left': wid})
+                .addClass('opened');
+        }, id, 'applications');        
+    });
 }
 
 function MetaInfo(data) {
@@ -174,46 +251,12 @@ function ApiRequest(fn, query, uri='graphs') {
             'Authorization': 'jwt ' + jwt
         }
     })
-    .fail(function() {
-        alert( "error" );
-    })
-    .done(fn)
-    .always(function() {
-        
-    });
+    .fail(console.log)
+    .done(fn);
 }
 
 
-function CreateBox() {
 
-    function createBox(data) {
-        var template = $('#tpl_clients').html();
-
-        data['hasContacts'] = function() {
-            return _.get(data, 'contacts');
-        }
-
-        var html = Mustache.to_html(template, data);
-
-        $('#infobox')
-            .html(html)
-            .css({'left': 156})
-            .addClass('opened');
-    }
-
-    this.info_box = function() {
-        var id = $(this).data('id');
-        var type = $(this).data('type');
-
-        ApiRequest(createBox, id, type);
-    };
-
-    $('#infobox').mouseleave(function() {
-        $(this).css({'left': -300});
-    });
-
-    $('#menu').find('.get_info').click(this.info_box);
-}
 
 function MenuBar() {
 
@@ -241,21 +284,15 @@ function MenuBar() {
     }
 
     this.open = function(result) {
-
         result['families'] = _.map(_.get(result, 'ifamilies.items'), map_families);
         result['hist'] = hist(result);
 
-        var template = $('#tpl_menu').html();
-        var html = Mustache.to_html(template, result);
-
-        $('#menu').html(html);
+        FactoryTemplate('#tpl_menu', $('#menu'), result)
+            .addClass('opened');
 
         new CreateBox();
         setupSlideToggle();
-        $('#menu').addClass('opened');
     };
-
-
 
     this.setup = function () {
         ApiRequest(this.open, MetaInfo('id'));
@@ -299,14 +336,15 @@ function AppSVG(svg) {
 
         this.setupSVGObject();
 
-        new AppTooltip(this.root).setup();
-        new AnimateLines(this.app).setup();
-        new MenuBar().setup();
+        if (window.matchMedia("(min-width: 700px)").matches) {
+            new AppTooltip(this.root).setup();
+            new AnimateLines(this.app).setup();
+            new MenuBar().setup();
+        }
+
+        
     }
 }
-
-
-
 
 
 $(document).ready(function() {
