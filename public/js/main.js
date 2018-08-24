@@ -225,7 +225,6 @@ function MenuBar() {
             var v = hist[ht];
             var h = v * 10;
             arr.push({'h': h, 'value': v});
-
         }
 
         return arr
