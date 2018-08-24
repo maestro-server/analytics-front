@@ -8,6 +8,6 @@ module.exports = function (gulp, $) {
     'use strict';
 
     gulp.task('watch', function() {
-        return gulp.watch(['assets/js/*.js','assets/css/*.css'], ['compile', 'minify']);
+        return gulp.watch(['assets/js/**/*.js','assets/css/**/*.css'], ['compile', 'minify']);
     })
 };

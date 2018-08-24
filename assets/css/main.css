@@ -344,6 +344,7 @@ body {
 }
 
 
+
 /*
     ===================== Mini tooltip
 */
@@ -361,7 +362,7 @@ body {
 .noshow {
     visibility: hidden;
     opacity: 0;
-    transition: opacity 0.5s;
+    transition: opacity 0.5s, left 0.2s, top 0.2s;
 }
 
 .show {

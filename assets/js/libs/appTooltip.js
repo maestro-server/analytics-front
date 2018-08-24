@@ -7,6 +7,7 @@ var ApiRequest = require('./apiRequest.js');
 
 function AppTooltip(app) {
     var tooltip = $('#app-tooltip');
+    var lock = null;
 
     function eachTspan(target) {
         var app = []
@@ -43,6 +44,7 @@ function AppTooltip(app) {
     }
 
     function hiddenTool(target) {
+        lock = null;
         var id = $(target).attr('id');
 
         desactiveLines(id);
@@ -52,12 +54,13 @@ function AppTooltip(app) {
             .removeClass('show');
     }
 
+
     function cal_wid(that) {
         var wid = $(that).width() + $(that).position().left + 50;
         var lim = $( window ).width() - $(that).width() - 110;
 
         if (wid > lim)
-            wid = $(that).position().left - $(that).width() - 140;
+            wid = $(that).position().left - $(that).width() - 60;
         
         return wid;
     }
@@ -70,12 +73,16 @@ function AppTooltip(app) {
 
     this.actived = function(e) {
         var id = $(this).attr('id');
-        var elID = getIdTool(id);
-        var obj = $(elID);
 
-        showTool(obj, e);
-        activeLines(id);
-        $(this).addClass('glowing');
+        if (id != lock) {
+            lock = id;
+            var elID = getIdTool(id);
+            var obj = $(elID);
+
+            showTool(obj, e);
+            activeLines(id);
+            $(this).addClass('glowing');
+        }
     };
 
     this.desactived = function(e) {
@@ -83,8 +90,10 @@ function AppTooltip(app) {
 
         if ($(e.toElement).hasClass('apptlp')) {
             $(e.toElement).mouseleave(function() {
-                hiddenTool(that);
-                $(this).off('mouseleave');
+                if (!$(e.toElement).hasClass('app-tooltip')) {
+                    hiddenTool(that);
+                    $(this).off('mouseleave');
+                }
             });
         } else {
             hiddenTool(that);
