@@ -13,8 +13,8 @@ function AnimateLines(app) {
 
     function animateMinis(path) {
         var length = path.length();
-        var c = app.ellipse(5, 4).fill(color).addClass('mini-ell');
 
+        var c = path.parent().ellipse(5, 4).fill(color).addClass('mini-ell');
         var vel = 500 + length
 
         c.animate(vel, '<>').during(function (pos, morph, eased) {

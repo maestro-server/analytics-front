@@ -27,7 +27,7 @@ function AppTooltip(app) {
         };
 
         FactoryTemplate('#tpl_tooltip', tooltip, data)
-            .offset({ top : e.pageY -50, left: e.pageX})
+            .offset({ top : e.pageY -50, left: e.pageX + 10})
             .addClass('show');
     }
 
