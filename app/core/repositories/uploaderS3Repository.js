@@ -9,7 +9,7 @@ const factoryValid = require('core/libs/factoryValid');
 const s3Valid = require('core/validators/s3_valid');
 
 
-const UploaderRepository = (folder) => {
+const UploaderRepository = () => {
 
     factoryValid(
         _.pick(process.env, ['AWS_S3_BUCKET_NAME', 'AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY']),
@@ -17,6 +17,17 @@ const UploaderRepository = (folder) => {
     );
 
     return {
+        getPath(folder, filename) {
+            const S3_BUCKET = process.env.AWS_S3_BUCKET_NAME;
+            const PATH = `${S3_BUCKET}/${folder}/${filename}`;
+            return PATH;
+        },
+
+        getFolder(folder) {
+            const S3_BUCKET = process.env.AWS_S3_BUCKET_NAME;
+            const PATH = `${S3_BUCKET}/${folder}`;
+            return PATH;
+        },
 
         upload(out, folder, filename, filetype="text/html") {
 
@@ -44,7 +55,7 @@ const UploaderRepository = (folder) => {
             return new Promise((resolve, reject) => {
                 const s3 = new aws.S3();
                 const S3_BUCKET = process.env.AWS_S3_BUCKET_NAME;
-                const PATH = S3_BUCKET + '/' + folder;
+                const PATH = `${S3_BUCKET}/${folder}`;
 
                 const prm = s3.getObject({
                     Bucket: S3_BUCKET,
