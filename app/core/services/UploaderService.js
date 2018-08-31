@@ -5,20 +5,29 @@ const {TYPE_DEFAULT} = require('core/configs/uploadRole');
 const FileFoundError = require('core/errors/factoryError')('FileFoundError');
 
 
-const UploaderService = (Entity, owner, dfolder='graphs-bussiness') => {
+const UploaderService = (Entity, owner, ext = 'html', dfolder='graphs-bussiness') => {
     const typeU = process.env.MAESTRO_UPLOAD_TYPE || TYPE_DEFAULT;
     const FUploaderRepository = require(`core/repositories/uploader${typeU}Repository`);
 
     const UploaderRepository = FUploaderRepository(Entity.name);
 
     const folder = `${dfolder}/${owner}`;
+    const filename = `${owner}.${ext}`;
 
     return {
 
-        uploadImage(out, ext = 'html') {
+        getFullPath(fext = ext) {
+            const tmp = `${owner}.${fext}`;
+            return UploaderRepository.getPath(folder, tmp);
+        },
+
+        getFolder() {
+            return UploaderRepository.getFolder(folder);
+        },
+
+        uploadImage(out) {
 
             return new Promise((resolve, reject) => {
-                const filename = `${owner}.${ext}`;
 
                 return UploaderRepository
                     .upload(out, folder, filename)
@@ -28,10 +37,9 @@ const UploaderService = (Entity, owner, dfolder='graphs-bussiness') => {
             });
         },
 
-        readImage(ext = 'html') {
+        readImage() {
 
             return new Promise((resolve, reject) => {
-                const filename = `${owner}.${ext}`;
 
                 return UploaderRepository
                     .readfiles(folder, filename)

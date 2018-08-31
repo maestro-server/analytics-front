@@ -13,5 +13,7 @@ module.exports = function (router) {
     router
         .get('/:id', authenticate(), ViewGraph.view)
 
+        .get('/png/:id', authenticate(), ViewGraph.png)
+
         .post('/', authenticate_analytics(), PersistenceGraph.create);
 };

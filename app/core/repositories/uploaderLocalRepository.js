@@ -18,6 +18,16 @@ const UploaderRepository = () => {
     mkDirByPathSync(newPath);
 
     return {
+        getPath(folder, filename) {
+            const relPath = `${newPath}/${folder}`;
+            const fullpath = `${relPath}/${filename}`;
+            return fullpath;
+        },
+
+        getFolder(folder) {
+            return `${newPath}/${folder}`;
+        },
+
         upload(out, folder, filename) {
             return new Promise((resolve, reject) => {
                 const relPath = `${newPath}/${folder}`;

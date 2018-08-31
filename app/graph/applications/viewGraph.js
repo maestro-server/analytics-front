@@ -5,6 +5,7 @@ const _ = require('lodash');
 const DPersistenceServices = require('core/services/PersistenceServices');
 const DUploaderService = require('core/services/UploaderService');
 
+const pngGraph = require('graph/services/readPngGraph.js');
 const notExist = require('graph/applications/validator/validNotExist');
 
 
@@ -13,14 +14,15 @@ const ApplicationReport = (Entity, PersistenceServices = DPersistenceServices) =
     const UploadService = FUploadService;
 
     return {
-        view(req, res, next) {
+        view(req, res) {
             const {id} = req.params;
+            const ext = _.get(req.query, 'ext', 'html');
 
             PersistenceServices(Entity)
                 .findOne(id, req.user)
                 .then(notExist)
                 .then(() => {
-                    return UploadService(Entity, id)
+                    return UploadService(Entity, id, ext)
                             .readImage();
                 })
                 .then(e => res.send(e))
@@ -28,6 +30,20 @@ const ApplicationReport = (Entity, PersistenceServices = DPersistenceServices) =
                     console.error(e);
                     res.render('404');
                 });
+        },
+
+        png(req, res) {
+            const {id} = req.params;
+
+            PersistenceServices(Entity)
+                .findOne(id, req.user)
+                .then(notExist)
+                .then(() => pngGraph(Entity, id)(UploadService))
+                .then(e => res.sendFile(e))
+                .catch((e) => {
+                    console.error(e);
+                    res.render('404');
+                });            
         }
     };
 };

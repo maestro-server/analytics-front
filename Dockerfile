@@ -21,3 +21,5 @@ RUN npm rebuild bcrypt --build-from-source
 
 ENTRYPOINT ["/sbin/tini","-g","--"]
 CMD ["docker-entrypoint.sh"]
+
+#sudo apt-get install libfontconfig
