@@ -39,7 +39,8 @@
     "mongorito": "~2.2.0",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
-    "svg-to-png": "^3.1.2"
+    "svg-to-png": "^3.1.2",
+    "svg2png": "^4.1.1"
   },
   "devDependencies": {
     "browserify": "^16.2.2",

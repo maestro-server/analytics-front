@@ -34,12 +34,13 @@ const ApplicationReport = (Entity, PersistenceServices = DPersistenceServices) =
 
         png(req, res) {
             const {id} = req.params;
+            res.type('png');
 
             PersistenceServices(Entity)
                 .findOne(id, req.user)
                 .then(notExist)
                 .then(() => pngGraph(Entity, id)(UploadService))
-                .then(e => res.sendFile(e))
+                .then(e => res.send(e))
                 .catch((e) => {
                     console.error(e);
                     res.render('404');

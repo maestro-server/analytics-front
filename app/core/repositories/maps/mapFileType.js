@@ -3,10 +3,17 @@
 module.exports = function(type) {
 
     const maps = {
-        "image/jpeg": "jpg",
-        "image/jpg": "jpg",
-        "image/gif": "gif",
-        "image/png": "png"
+        'txt': 'text/plain',
+        'html': 'text/html',
+        'css': 'text/css',
+        'xml': 'application/xml',
+        'json': 'application/json',
+        'js': 'application/javascript',
+        'jpg': 'image/jpeg',
+        'jpeg': 'image/jpeg',
+        'gif': 'image/gif',
+        'png': 'image/png',
+        'svg': 'image/svg+xml'
     };
 
     if(maps[type] !== null && maps.hasOwnProperty(type)) {

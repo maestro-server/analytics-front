@@ -12,37 +12,40 @@ const UploaderService = (Entity, owner, ext = 'html', dfolder='graphs-bussiness'
     const UploaderRepository = FUploaderRepository(Entity.name);
 
     const folder = `${dfolder}/${owner}`;
-    const filename = `${owner}.${ext}`;
 
     return {
 
-        getFullPath(fext = ext) {
-            const tmp = `${owner}.${fext}`;
-            return UploaderRepository.getPath(folder, tmp);
-        },
-
-        getFolder() {
-            return UploaderRepository.getFolder(folder);
-        },
-
-        uploadImage(out) {
+        uploadImage(out, fext = ext) {
 
             return new Promise((resolve, reject) => {
+                const filename = `${owner}.${fext}`;
 
                 return UploaderRepository
-                    .upload(out, folder, filename)
+                    .upload(out, folder, filename, fext)
                     .then(resolve)
                     .catch(reject);
 
             });
         },
 
-        readImage() {
+        readImage(fext = ext) {
+
+            return new Promise((resolve, reject) => {
+                const filename = `${owner}.${fext}`;
+
+                return UploaderRepository
+                    .readfiles(folder, filename)
+                    .then(resolve)
+                    .catch(reject);
+            });
+        },
+
+        convertSvgToPng(fext = ext) {
 
             return new Promise((resolve, reject) => {
 
                 return UploaderRepository
-                    .readfiles(folder, filename)
+                    .convertSvgToPng(folder, owner, fext)
                     .then(resolve)
                     .catch(reject);
             });

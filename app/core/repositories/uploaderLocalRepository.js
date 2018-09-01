@@ -1,7 +1,8 @@
 'use strict';
 
 const _ = require('lodash');
-const fs = require('fs');
+const fs = require("pn/fs");
+const svg_to_png = require('svg-to-png');
 const getPwdPath = require('core/libs/pwd');
 const mkDirByPathSync = require('./libs/mkdirRecursive');
 
@@ -18,35 +19,24 @@ const UploaderRepository = () => {
     mkDirByPathSync(newPath);
 
     return {
-        getPath(folder, filename) {
-            const relPath = `${newPath}/${folder}`;
-            const fullpath = `${relPath}/${filename}`;
-            return fullpath;
-        },
-
-        getFolder(folder) {
-            return `${newPath}/${folder}`;
-        },
-
-        upload(out, folder, filename) {
+        upload(out, folder, filename, ext) {
             return new Promise((resolve, reject) => {
                 const relPath = `${newPath}/${folder}`;
                 const fullpath = `${relPath}/${filename}`;
-
 
                 if (!fs.existsSync(relPath)){
                     fs.mkdirSync(relPath);
                 }
 
-                fs.writeFile(fullpath, out, (err) => {
-                    if (err)
-                        reject(err);
+                fs.writeFile(fullpath, out)
+                    .then(() => {
+                        resolve({
+                            filename,
+                            fullpath
+                        });
+                    })
+                    .catch(reject);
 
-                    resolve({
-                        filename,
-                        fullpath
-                    });
-                });
             });
         },
 
@@ -56,12 +46,26 @@ const UploaderRepository = () => {
                 const relPath = `${newPath}/${folder}`;
                 const fullpath = `${relPath}/${filename}`;
 
-                fs.readFile(fullpath, 'utf8', function(err, contents) {
-                    if (err)
-                        reject(err);
+                fs.readFile(fullpath)
+                    .then(resolve)
+                    .catch(reject);
 
-                    resolve(contents);
-                });
+            });
+        },
+
+        convertSvgToPng(folder, filename, ext) {
+
+            return new Promise((resolve, reject) => {
+
+                const nPath = `${newPath}/${folder}/`;
+                const fullS = `${nPath}${filename}.svg`;
+                const fullP = `${nPath}${filename}.${ext}`;
+
+                svg_to_png
+                    .convert(fullS, nPath)
+                    .then(() => fs.readFile(fullP))
+                    .then(resolve)
+                    .catch(reject);
             });
         }
     };

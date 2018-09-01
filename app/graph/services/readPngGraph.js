@@ -1,6 +1,5 @@
 'use strict';
 
-const svgToPng = require('graph/services/svgToPng.js');
 
 module.exports = (Entity, id) => (UploadService) => {
 
@@ -9,11 +8,13 @@ module.exports = (Entity, id) => (UploadService) => {
         const Upload = UploadService(Entity, id, "png");
 
         Upload.readImage()
-            .then(() => resolve(Upload.getFullPath()))
+            .then(resolve)
             .catch((e) => {
-                if (e.code == 'ENOENT') {
-                    svgToPng(Upload)
-                    .then(resolve);
+                if (e.code == 'ENOENT' || e.code == 'AccessDenied') {
+                    Upload
+                        .convertSvgToPng('png')
+                        .then(resolve)
+                        .catch(reject);
                 } else {
                     reject(e);
                 }
