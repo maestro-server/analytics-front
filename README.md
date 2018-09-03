@@ -110,7 +110,7 @@ gulp eslint
 | NODE_ENV                     | development|production   |                               |
 | MAESTRO_MONGO_URI            | localhost/maestro-client |  DB string connection         |
 | MAESTRO_SECRETJWT            | XXXX                     |  Secret key - session         |
-| MAESTRO_ANALYTICS_SECRETJWT  | XXXX                     |  Same analytics app           |
+| MAESTRO_SECRETJWT_ANALYTICS  | XXXX                     |  Same analytics app           |
 | AWS_ACCESS_KEY_ID            | XXXX                     |                               |
 | AWS_SECRET_ACCESS_KEY        | XXXX                     |                               |
 | AWS_DEFAULT_REGION           | us-east-1                |                               |
