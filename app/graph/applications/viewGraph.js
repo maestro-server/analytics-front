@@ -18,6 +18,8 @@ const ApplicationReport = (Entity, PersistenceServices = DPersistenceServices) =
             const {id} = req.params;
             const ext = _.get(req.query, 'ext', 'html');
 
+            res.type(ext);
+
             PersistenceServices(Entity)
                 .findOne(id, req.user)
                 .then(notExist)

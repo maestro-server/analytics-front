@@ -13,4 +13,4 @@ npm-debug*
 coverage/
 .nyc_output/
 artifacts/
-
+tmp/

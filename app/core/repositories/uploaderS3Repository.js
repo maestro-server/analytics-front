@@ -86,6 +86,10 @@ const UploaderRepository = () => {
                     .then(buffer => {
                         UploaderRepository()
                             .upload(buffer, folder, imgFilename, ext)
+                            .then(() => {
+                                fs.unlink(fullS);
+                                fs.unlink(fullP);
+                            })
                             .catch(console.log);
 
                         resolve(buffer);
