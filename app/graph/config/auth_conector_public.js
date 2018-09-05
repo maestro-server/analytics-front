@@ -5,32 +5,18 @@ const {Passport} = require('passport');
 
 const {Strategy} = require('passport-jwt');
 
-const User = require('graph/entities/Users');
-const DBRepository = require('core/repositories/DBRepository');
-
-const config = require('graph/config/auth_config')();
+const config = require('graph/config/auth_config_analytics_public')();
 const PermissionError = require('core/errors/factoryError')('PermissionError');
 
 module.exports = function () {
     const passport = new Passport();
 
     const strategy = new Strategy(config.jwtSecret, function (payload, done) {
-        const {_id} = payload;
-
-        console.log(_id)
-
-        if (_id) {
-            DBRepository(User)
-                .findOne({_id}, ['_id', 'email'])
-                .then((e) => {
-                    if (!_.isEmpty(e)) {
-                        return done(null, e);
-                    }
-                    return done(new PermissionError("User not found"), false);
-                })
-                .catch(error => done(error, null));
+        if (payload) {
+            done(null, payload);
+        } else {
+            done(new PermissionError("Graph not found"), false);
         }
-
     });
 
     passport.use(strategy);

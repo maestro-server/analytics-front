@@ -2,7 +2,6 @@
 
 const _ = require('lodash');
 const {TYPE_DEFAULT} = require('core/configs/uploadRole');
-const FileFoundError = require('core/errors/factoryError')('FileFoundError');
 
 
 const UploaderService = (Entity, owner, ext = 'html', dfolder='graphs-bussiness') => {

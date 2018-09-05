@@ -20,18 +20,23 @@ function AppSVG(svg) {
     }
 
     this.setup = function() {
+        var urlParams = new URLSearchParams(window.location.search);
+        var jwt = urlParams.get('jwt');
+
         new ZoomPanSVG().setup();
 
         this.setupSVGObject();
 
         if (window.matchMedia("(min-width: 700px)").matches) {
-            new AppTooltip(this.root).setup();
+            new AppTooltip(this.root, jwt).setup();
             new AnimateLines(this.app).setup();
-            new MenuBar().setup();
+
+            if (jwt)
+                new MenuBar().setup();
         }
 
         
-    }
+    };
 }
 
 module.exports = AppSVG;

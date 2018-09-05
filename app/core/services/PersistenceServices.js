@@ -13,6 +13,16 @@ const Persistence = (Entity, FactoryDBRepository = DFactoryDBRepository) => {
     const DBRepository = FactoryDBRepository(Entity);
 
     return {
+        public(filter) {
+            return new Promise((resolve, reject) => {
+                
+                return DBRepository
+                    .findOne(filter)
+                    .then(resolve)
+                    .catch(reject);
+            });
+        },
+
 
         findOne (_id, owner, access = Access.ROLE_READ) {
 

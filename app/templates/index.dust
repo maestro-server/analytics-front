@@ -85,6 +85,7 @@
                     {~lb}{~lb}/families{~rb}{~rb}
                 </ol>
             </li>
+            {~lb}{~lb}#hasSystems{~rb}{~rb}
             <li class="system">
                 <h2>Systems <span class="number">({~lb}{~lb}isystems.total{~rb}{~rb})</span></h2>
                 <ul>
@@ -93,6 +94,9 @@
                     {~lb}{~lb}/isystems.items{~rb}{~rb}
                 </ul>
             </li>
+            {~lb}{~lb}/hasSystems{~rb}{~rb}
+            
+            {~lb}{~lb}#hasClients{~rb}{~rb}
             <li class="clients">
                 <h2>Clients <span class="number">({~lb}{~lb}iclients.total{~rb}{~rb})</span></h2>
                 <ul>
@@ -101,6 +105,7 @@
                     {~lb}{~lb}/iclients.items{~rb}{~rb}
                 </ul>
             </li>
+            {~lb}{~lb}/hasClients{~rb}{~rb}
         </ul>
 
         <a href="http://maestroserver.io" target="_blank" class="footer">Powered by<br/> Maestro Server</a>

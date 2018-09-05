@@ -6,7 +6,7 @@ var MetaInfo = require('./metaInfo.js');
 
 function ApiRequest(fn, query, uri) {
     var urlParams = new URLSearchParams(window.location.search);
-    var jwt = urlParams.get('jwt')
+    var jwt = urlParams.get('jwt');
 
     $.ajax({
         url: MetaInfo('api') + '/' + uri + '/' + query,

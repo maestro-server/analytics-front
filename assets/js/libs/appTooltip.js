@@ -5,7 +5,7 @@ var FactoryTemplate = require('./factoryTemplate.js');
 var ApiRequest = require('./apiRequest.js');
 
 
-function AppTooltip(app) {
+function AppTooltip(app, clk=true) {
     var tooltip = $('#app-tooltip');
     var lock = null;
 
@@ -100,19 +100,21 @@ function AppTooltip(app) {
         }
     };
 
-    $('#app-tooltip').click(function(e) {
-        var id = $(this).find('a').data('id');
-        id = id.replace('tool-', '');
-
-        var that = this;
-
-        ApiRequest(function(data){
-            var wid = cal_wid(that);
- 
-            FactoryTemplate('#tpl_info', $('#infobox'), data)
-                .css({'left': wid})
-                .addClass('opened');
-        }, id, 'applications');        
-    });
+    if (clk) {
+        $('#app-tooltip').click(function(e) {
+            var id = $(this).find('a').data('id');
+            id = id.replace('tool-', '');
+    
+            var that = this;
+    
+            ApiRequest(function(data){
+                var wid = cal_wid(that);
+     
+                FactoryTemplate('#tpl_info', $('#infobox'), data)
+                    .css({'left': wid})
+                    .addClass('opened');
+            }, id, 'applications');        
+        });
+    };
 }
 module.exports = AppTooltip;

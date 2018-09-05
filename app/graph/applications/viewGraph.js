@@ -17,11 +17,34 @@ const ApplicationReport = (Entity, PersistenceServices = DPersistenceServices) =
         view(req, res) {
             const {id} = req.params;
             const ext = _.get(req.query, 'ext', 'html');
-
             res.type(ext);
 
             PersistenceServices(Entity)
                 .findOne(id, req.user)
+                .then(notExist)
+                .then(() => {
+                    return UploadService(Entity, id, ext)
+                            .readImage();
+                })
+                .then(e => res.send(e))
+                .catch((e) => {
+                    console.error(e);
+                    res.render('404');
+                });
+        },
+
+        public(req, res) {
+            const {id} = req.user;
+            const ext = _.get(req.query, 'ext', 'html');
+            res.type(ext);
+     
+            const filter = {
+                _id: id,
+                spublic: true
+            };
+
+            PersistenceServices(Entity)
+                .public(filter)
                 .then(notExist)
                 .then(() => {
                     return UploadService(Entity, id, ext)

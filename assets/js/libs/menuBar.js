@@ -37,6 +37,9 @@ function MenuBar() {
         result['families'] = _.map(_.get(result, 'ifamilies.items'), map_families);
         result['hist'] = hist(result);
 
+        result['hasClients'] = _.get(result, 'iclients.total') > 0;
+        result['hasSystems'] = _.get(result, 'isystems.total') > 0;
+
         FactoryTemplate('#tpl_menu', $('#menu'), result)
             .addClass('opened');
 
