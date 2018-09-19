@@ -40,6 +40,16 @@
         "favicon": {
             "enabled": false
         },
+        "urlencoded": {
+            "module": {
+                "arguments": [
+                    {
+                        "limit": "50mb",
+                        "extended": true
+                    }
+                ]
+            }
+        },
         "multipart": {
             "enabled": true,
             "params": {
