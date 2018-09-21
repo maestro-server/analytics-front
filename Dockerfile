@@ -8,12 +8,13 @@ COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 COPY app/ app/
-COPY public/templates public/templates
+COPY assets/ app/assets/
+COPY public/ app/public/
 COPY package.json .
 COPY pm2.json .
 COPY server.js .
 
-RUN mkdir -p /data/public/static
+RUN mkdir -p /data/artifacts/graphs-bussiness
 
 RUN apk --no-cache add --virtual native-deps g++ gcc libgcc libstdc++ linux-headers make python tini
 RUN npm install --only=production
