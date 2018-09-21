@@ -20,20 +20,6 @@ describe('unit - core', function () {
      ------------------------------------------------------- repositories
      */
 
-    it('repositories - maps - mapFileType', function (done) {
-        const map = require('core/repositories/maps/mapFileType');
-
-        const test1 = map("image/jpeg");
-        const test2 = map("image/png");
-        const test3 = map("default");
-
-        expect(test1).to.equal('jpg');
-        expect(test2).to.equal('png');
-        expect(test3).to.equal('default');
-
-        done();
-    });
-
     it('repositories - transforms - activeFormat', function (done) {
         const format = require('core/repositories/transforms/activeFormat');
 
