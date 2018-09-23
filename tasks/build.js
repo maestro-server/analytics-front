@@ -16,7 +16,7 @@ module.exports = function (gulp, $) {
           .bundle()
           .pipe(source('app.js')) // gives streaming vinyl file object
           .pipe(buffer()) // <----- convert from streaming to buffered vinyl file object
-          .pipe(uglify()) // now gulp-uglify works 
+          .pipe(uglify({mangle: false})) // now gulp-uglify works
           .pipe(gulp.dest('./public/js'));
       });
 };

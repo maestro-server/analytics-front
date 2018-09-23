@@ -29,6 +29,7 @@ jobs:
         - '7'
       script:
         - npm run test
+        - npm run build
 
     - stage: coverage
       script:
