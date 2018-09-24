@@ -17,8 +17,6 @@ module.exports = function () {
     const strategy = new Strategy(config.jwtSecret, function (payload, done) {
         const {_id} = payload;
 
-        console.log(_id)
-
         if (_id) {
             DBRepository(User)
                 .findOne({_id}, ['_id', 'email'])
