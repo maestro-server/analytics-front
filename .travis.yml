@@ -30,13 +30,6 @@ jobs:
       script:
         - npm run test
 
-    - stage: build
-      node_js:
-        - '8'
-      script:
-        - npm run build
-        - npm run minify
-
     - stage: coverage
       script:
         - npm run coverage
@@ -47,18 +40,22 @@ jobs:
 
     - stage: build docker image - base
       if: branch != master
-      node_js: 8
       script:
-        - docker build -f Dockerfile -t $REPO .
-        - docker login -u $DOCKER_USER -p $DOCKER_PASS
-        - docker tag $REPO $DOCKER_USER/$REPO:$TRAVIS_BRANCH
-        - docker push $DOCKER_USER/$REPO:$TRAVIS_BRANCH
+      - npm run build
+      - npm run minify
+      - docker build -f Dockerfile -t $REPO .
+      after_success:
+      - docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - docker tag $REPO $DOCKER_USER/$REPO:$TRAVIS_BRANCH
+      - docker push $DOCKER_USER/$REPO:$TRAVIS_BRANCH
 
-    - stage: build docker image - latest
+    - stage: build docker image - latets
       if: branch = master
-      node_js: 8
       script:
-        - docker build -f Dockerfile -t $REPO .
-        - docker login -u $DOCKER_USER -p $DOCKER_PASS
-        - docker tag $REPO $DOCKER_USER/$REPO:latest
-        - docker push $DOCKER_USER/$REPO:latest
+       - npm run build
+       - npm run minify
+       - docker build -f Dockerfile -t $REPO .
+      after_success:
+       - docker login -u $DOCKER_USER -p $DOCKER_PASS
+       - docker tag $REPO $DOCKER_USER/$REPO:latest
+       - docker push $DOCKER_USER/$REPO:latest
