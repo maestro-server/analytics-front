@@ -29,7 +29,13 @@ jobs:
         - '7'
       script:
         - npm run test
+
+    - stage: build
+      node_js:
+        - '8'
+      script:
         - npm run build
+        - npm run minify
 
     - stage: coverage
       script:
