@@ -7,6 +7,7 @@ const kraken = require('kraken-js');
 
 const db_connect = require('core/libs/db_run');
 const Mongorito = require('mongorito');
+const dbpath = require('core/libs/dbpath')();
 
 /*
  * Create and configure application. Also exports application instance for use by tests.
@@ -20,7 +21,7 @@ const options = {
          */
 
         db_connect(function *() {
-            yield Mongorito.connect(process.env.MAESTRO_MONGO_URI || 'localhost/maestro-client');
+            yield Mongorito.connect(dbpath);
             next(null, config);
             console.log("Maestro: Mongo online");
         });

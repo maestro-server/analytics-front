@@ -108,7 +108,8 @@ gulp eslint
 |------------------------------|--------------------------|-------------------------------|
 | MAESTRO_PORT                 | 9999                     |                               |
 | NODE_ENV                     | development|production   |                               |
-| MAESTRO_MONGO_URI            | localhost/maestro-client |  DB string connection         |
+| MAESTRO_MONGO_URI            | localhost                |  DB string connection         |
+| MAESTRO_MONGO_DATABASE       | maestro-client           |  Database name                |  
 | MAESTRO_SECRETJWT            | XXXX                     |  Secret key - session         |
 | MAESTRO_SECRETJWT_ANALYTICS  | XXXX                     |  Same analytics app           |
 | AWS_ACCESS_KEY_ID            | XXXX                     |                               |
