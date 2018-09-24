@@ -5,11 +5,9 @@
   <title>Maestro Server - Cloud Inventory</title>
   <meta name="Description" content="Graph viewer - Maestro Server">
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/static/imgs/favicon.ico">
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" type="text/css" href="{hostname}/css/main.css"></link>
+  <link rel="stylesheet" type="text/css" href="/css/main.css"></link>
   <meta name="api_url" content="{api_url}">
   <meta name="id" content="{graph_id}">
 
@@ -231,7 +229,7 @@
         </div>
     </script>
 
-    <script src="{hostname}/js/app.js"></script>
+    <script src="/js/app.js"></script>
 
 </body>
 </html>
