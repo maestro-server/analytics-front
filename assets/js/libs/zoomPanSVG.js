@@ -15,7 +15,9 @@ function ZoomPanSVG() {
             dblClickZoomEnabled: false,
             maxZoom:4
         });
-    
+
+        //panZoom.zoomBy(0.5);
+
         $(window).resize(function() {
             panZoom.resize();
             panZoom.fit();

@@ -6,7 +6,7 @@ var SVG = require('svg.js');
 
 
 function AnimateLines(app) {
-    var color="#6b2626";
+    var color = "#6b2626";
     var actived = false;
 
     var tooltip = $('#conn-tooltip');
@@ -30,7 +30,7 @@ function AnimateLines(app) {
         var path = SVG.adopt(target);
         animateMinis(path);
 
-        var timer = setInterval(function() {
+        var timer = setInterval(function () {
             if (actived) {
                 animateMinis(path);
 
@@ -54,36 +54,39 @@ function AnimateLines(app) {
 
     function showLabel(target, e) {
         var txt = $(target).parent().find('text');
+        var ptxt = txt.text()
 
-        tooltip
-            .offset({ top : e.pageY, left: e.pageX})
-            .text(txt.text())
-            .addClass('show');
+        if(ptxt != 'None') {
+            tooltip
+                .offset({top: e.pageY, left: e.pageX})
+                .text(ptxt)
+                .addClass('show');
+        }
     }
 
     function hideLabel() {
         tooltip
-            .offset({ top : 0, left: 0})
+            .offset({top: 0, left: 0})
             .removeClass('show');
     }
 
-    this.setup = function() {
+    this.setup = function () {
         $('svg').find('.conector_h')
             .mouseover(this.actived)
             .mouseleave(this.desactived);
     };
 
-    this.actived = function(e) {
+    this.actived = function (e) {
         actived = true;
 
         if (!_.get(e, 'isTrigger'))
             showLabel(this, e);
-        
+
         transfPath(this, color, 2);
         startAnimation(this);
     };
 
-    this.desactived = function() {
+    this.desactived = function () {
         actived = false;
 
         hideLabel();
