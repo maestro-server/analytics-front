@@ -14,7 +14,6 @@ function ApiRequest(fn, query, uri) {
             'Authorization': 'jwt ' + jwt
         }
     })
-    .fail(console.log)
     .done(fn);
 }
 
