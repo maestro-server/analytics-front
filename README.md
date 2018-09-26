@@ -35,20 +35,23 @@ Constructed with KrakenJs, we create a lot of middleware and organize by domain.
 
 ## TechStack ##
 
-* NodeJs 8.11.2
+* NodeJs 8.11.
 * MongoDB 3.4
+* RabbitMQ
 * AWS S3 (If using S3 upload)
 
 ## Service relations ##
+
 * Maestro Analytics
 * Maestro Server App
+* Data App
 
 ## Setup ##
 
 #### Installation by docker ####
 
 ```bash
-docker run -p 9999:9999  -e "MAESTRO_MONGO_URI=mongodb/maestro-client" maestroserver/analytics-front-maestro
+docker run -p 9999:9999  -e "MAESTRO_MONGO_URI=mongodb" -e "MAESTRO_MONGO_DATABASE=maestro-client"  maestroserver/analytics-front-maestro
 ```
 Or by docker-compose
 
@@ -61,33 +64,26 @@ services:
     ports:
     - "9999:9999"
     environment:
-    - "MAESTRO_MONGO_URI=mongodb/maestro-client"
+    - "MAESTRO_MONGO_URI=mongodb"
+    - "MAESTRO_MONGO_DATABASE=maestro-client"
 ```
 
 #### Dev Env ####
-
-Setup mongodb and fake smtp
-
-```bash
-cd devtools/
-
-docker-compose up -d
-```
 
 Configure database and port application in .env file
 
 ```bash
 MAESTRO_PORT=9999
-MAESTRO_MONGO_URI='localhost/maestro-client'
+MAESTRO_MONGO_URI='localhost'
+MAESTRO_MONGO_DATABASE='maestro-client'
 ```
 
 Development
 
-Install nodejs, version above 7.6, mongodb need to be running.
+Install nodejs, version above 7.6, and mongodb need to be running.
 
 ```bash
 npm install
-npm run migrate //populate mongodb
 npm run server
 ```
 
@@ -104,21 +100,22 @@ gulp eslint
 
 ### Env variables ###
 
-| Env Variables                | Example                  | Description                   |
-|------------------------------|--------------------------|-------------------------------|
-| MAESTRO_PORT                 | 9999                     |                               |
-| NODE_ENV                     | development|production   |                               |
-| MAESTRO_MONGO_URI            | localhost                |  DB string connection         |
-| MAESTRO_MONGO_DATABASE       | maestro-client           |  Database name                |  
-| MAESTRO_SECRETJWT            | XXXX                     |  Secret key - session         |
-| MAESTRO_SECRETJWT_ANALYTICS  | XXXX                     |  Same analytics app           |
-| AWS_ACCESS_KEY_ID            | XXXX                     |                               |
-| AWS_SECRET_ACCESS_KEY        | XXXX                     |                               |
-| AWS_DEFAULT_REGION           | us-east-1                |                               |
-| AWS_S3_BUCKET_NAME           | maestroserver            |                               |
-| MAESTRO_UPLOAD_TYPE          | S3/Local                 |  Upload mode                  |
-| LOCAL_DIR                    | /public/static/          |  Where files will be uploaded |
-| PWD                          | $rootDirectory           |  PWD process                  |
+| Env Variables                        | Example                  | Description                   |
+|--------------------------------------|--------------------------|-------------------------------|
+| MAESTRO_PORT                         | 9999                     |                               |
+| NODE_ENV                             | development|production   |                               |
+| MAESTRO_MONGO_URI                    | localhost                |  DB string connection         |
+| MAESTRO_MONGO_DATABASE               | maestro-client           |  Database name                |  
+| MAESTRO_SECRETJWT                    | XXXX                     |  Secret key - session         |
+| MAESTRO_SECRETJWT_ANALYTICS          | XXXX                     |  Secret key - analytics       |
+| MAESTRO_SECRETJWT_PUBLIC_ANALYTICS   | XXXX                     |  Secret key - same server app |
+| AWS_ACCESS_KEY_ID                    | XXXX                     |                               |
+| AWS_SECRET_ACCESS_KEY                | XXXX                     |                               |
+| AWS_DEFAULT_REGION                   | us-east-1                |                               |
+| AWS_S3_BUCKET_NAME                   | maestroserver            |                               |
+| MAESTRO_UPLOAD_TYPE                  | S3/Local                 |  Upload mode                  |
+| LOCAL_DIR                            | /public/static/          |  Where files will be uploaded |
+| PWD                                  | $rootDirectory           |  PWD process                  |
 
 ### Contribute ###
 
