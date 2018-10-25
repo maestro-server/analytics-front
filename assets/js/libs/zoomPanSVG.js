@@ -2,12 +2,24 @@
 
 var $ = require('jquery');
 var svgPanZoom = require('svg-pan-zoom');
+var MetaInfo = require('./metaInfo.js');
 
 
 function ZoomPanSVG() {
 
+    var panZoom = null;
+
+    function ajustZoom() {
+        var qtd = MetaInfo('total', 4);
+        console.log(qtd);
+
+        if (qtd<4) {
+            panZoom.zoomBy(qtd/4);
+        }
+    };
+
     this.setup = function () {
-        var panZoom = svgPanZoom('#graph', {
+        panZoom = svgPanZoom('#graph', {
             zoomEnabled: true,
             controlIconsEnabled: true,
             fit: true,
@@ -16,14 +28,15 @@ function ZoomPanSVG() {
             maxZoom:4
         });
 
-        //panZoom.zoomBy(0.5);
+        ajustZoom();
 
         $(window).resize(function() {
             panZoom.resize();
             panZoom.fit();
             panZoom.center();
+            ajustZoom();
         });
-    }
+    };
 }
 
 module.exports = ZoomPanSVG;

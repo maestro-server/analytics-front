@@ -1,235 +1,238 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>Maestro Server - Cloud Inventory</title>
-  <meta name="Description" content="Graph viewer - Maestro Server">
+    <meta charset="utf-8">
+    <title>Maestro Server - Cloud Inventory</title>
+    <meta name="Description" content="Graph viewer - Maestro Server">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" type="text/css" href="/css/main.css"></link>
-  <meta name="api_url" content="{api_url}">
-  <meta name="id" content="{graph_id}">
+    <link rel="stylesheet" type="text/css" href="/css/main.css"></link>
+    <meta name="api_url" content="{api_url}">
+    <meta name="id" content="{graph_id}">
+    <meta name="total" content="{total}">
 
 </head>
 <body>
-    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-        <filter id="glow" height="300%" width="300%" x="-75%" y="-75%">
-            <feMorphology operator="dilate" radius="4" in="SourceAlpha" result="thicken" />
-            <feGaussianBlur in="thicken" stdDeviation="10" result="blurred" />
-            <feFlood flood-color="rgb(234,25,25)" result="glowColor" />
-            <feComposite in="glowColor" in2="blurred" operator="in" result="softGlow_colored" />
-            <feMerge>
-                <feMergeNode in="softGlow_colored"/>
-                <feMergeNode in="SourceGraphic"/>
-            </feMerge>
-        </filter>
-    </svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <filter id="glow" height="300%" width="300%" x="-75%" y="-75%">
+        <feMorphology operator="dilate" radius="4" in="SourceAlpha" result="thicken"/>
+        <feGaussianBlur in="thicken" stdDeviation="10" result="blurred"/>
+        <feFlood flood-color="rgb(234,25,25)" result="glowColor"/>
+        <feComposite in="glowColor" in2="blurred" operator="in" result="softGlow_colored"/>
+        <feMerge>
+            <feMergeNode in="softGlow_colored"/>
+            <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+    </filter>
+</svg>
 
-    <div id="viewer">
-        {payload|s}
-    </div>
+<div id="viewer">
+    {payload|s}
+</div>
 
 
-    <div id="infobox" class="info_box flex"></div>
-    <div id="menu" class="info_box flex"></div>
-    <div id="conn-tooltip" class="minitlp noshow"></div>
-    <div id="app-tooltip" class="apptlp noshow"></div>
-    <div id="servers-tooltip" class="apptlp noshow"></div>
+<div id="infobox" class="info_box flex"></div>
+<div id="menu" class="info_box flex"></div>
+<div id="conn-tooltip" class="minitlp noshow"></div>
+<div id="app-tooltip" class="apptlp noshow"></div>
+<div id="servers-tooltip" class="apptlp noshow"></div>
 
-    <script id="tpl_tooltip" type="text/template">
-        <a href="#more" data-id="{~lb}{~lb}id{~rb}{~rb}">
-            <ul>
-                {~lb}{~lb}#app{~rb}{~rb}
-                <li>
-                    <b>{~lb}{~lb}key{~rb}{~rb}:</b> 
-                    <span>{~lb}{~lb}value{~rb}{~rb}</span>
-                </li>
-                {~lb}{~lb}/app{~rb}{~rb}
-            </ul>
-            <div class="tb-btn">
-                <span>></span>
-            </div>
-        </a>
-    </script>
-
-    <script id="tpl_menu" type="text/template">
-        <ul class="menu">
-            <li class="title">
-                <h1>{~lb}{~lb}name{~rb}{~rb}</h1>
+<script id="tpl_tooltip" type="text/template">
+    <a href="#more" data-id="{~lb}{~lb}id{~rb}{~rb}">
+        <ul>
+            {~lb}{~lb}#app{~rb}{~rb}
+            <li>
+                <b>{~lb}{~lb}key{~rb}{~rb}:</b>
+                <span>{~lb}{~lb}value{~rb}{~rb}</span>
             </li>
-            <li class="histograms">
-                <h2>Histogram</h2>
-                <div class="hist">
-                    {~lb}{~lb}#hist{~rb}{~rb}
-                        <div style="height: {~lb}{~lb}h{~rb}{~rb}px"><p>{~lb}{~lb}value{~rb}{~rb}</p></div>
-                    {~lb}{~lb}/hist{~rb}{~rb}
-                </div>
-            </li>
-            <li class="info">
-                <h2>Info</h2>
-                <ol>
-                    <li><b>Density:</b> {~lb}{~lb}info.density{~rb}{~rb}</li>
-                    <li><b>Conections:</b> {~lb}{~lb}info.conections{~rb}{~rb}</li>
-                    <li><b>Servers:</b> {~lb}{~lb}iservers.total{~rb}{~rb}</li>
-                    <li><b>Apps:</b> {~lb}{~lb}ifamilies.total{~rb}{~rb}</li>
-                </ol>
-            </li>
-            <li class="families">
-                <h2>Types</h2>
-                <ol>
-                    {~lb}{~lb}#families{~rb}{~rb}
-                    <li><b>{~lb}{~lb}name{~rb}{~rb}:</b> {~lb}{~lb}qtd{~rb}{~rb}</li>
-                    {~lb}{~lb}/families{~rb}{~rb}
-                </ol>
-            </li>
-            {~lb}{~lb}#hasSystems{~rb}{~rb}
-            <li class="system">
-                <h2>Systems <span class="number">({~lb}{~lb}isystems.total{~rb}{~rb})</span></h2>
-                <ul>
-                    {~lb}{~lb}#isystems.items{~rb}{~rb}
-                    <li><a href="#" data-id="{~lb}{~lb}_id{~rb}{~rb}" data-type="system" class="get_info">{~lb}{~lb}name{~rb}{~rb}</a></li>
-                    {~lb}{~lb}/isystems.items{~rb}{~rb}
-                </ul>
-            </li>
-            {~lb}{~lb}/hasSystems{~rb}{~rb}
-            
-            {~lb}{~lb}#hasClients{~rb}{~rb}
-            <li class="clients">
-                <h2>Clients <span class="number">({~lb}{~lb}iclients.total{~rb}{~rb})</span></h2>
-                <ul>
-                    {~lb}{~lb}#iclients.items{~rb}{~rb}
-                    <li><a href="#" data-id="{~lb}{~lb}_id{~rb}{~rb}" data-type="clients" class="get_info">{~lb}{~lb}name{~rb}{~rb}</a></li>
-                    {~lb}{~lb}/iclients.items{~rb}{~rb}
-                </ul>
-            </li>
-            {~lb}{~lb}/hasClients{~rb}{~rb}
+            {~lb}{~lb}/app{~rb}{~rb}
         </ul>
-
-        <a href="http://maestroserver.io" target="_blank" class="footer">Powered by<br/> Maestro Server</a>
-    </script>
-
-    <script id="tpl_info" type="text/template">
-        <div class="half">
-            <h1>{~lb}{~lb}name{~rb}{~rb}</h1>
-
-            {~lb}{~lb}#family{~rb}{~rb}
-            <p class="tag tag-primary">{~lb}{~lb}family{~rb}{~rb}</p>
-            {~lb}{~lb}/family{~rb}{~rb}
-
-            {~lb}{~lb}#environment{~rb}{~rb}
-            <span class="tag">{~lb}{~lb}environment{~rb}{~rb}</span> 
-            {~lb}{~lb}/environment{~rb}{~rb}
-
-            {~lb}{~lb}#provider{~rb}{~rb}
-            <span class="tag">{~lb}{~lb}provider{~rb}{~rb}</span> 
-            {~lb}{~lb}/provider{~rb}{~rb}
-
-            {~lb}{~lb}#engine{~rb}{~rb}
-            <span class="tag">{~lb}{~lb}engine{~rb}{~rb}</span> 
-            {~lb}{~lb}/engine{~rb}{~rb}
-
-            {~lb}{~lb}#status{~rb}{~rb}
-            <span class="tag">{~lb}{~lb}status{~rb}{~rb}</span> 
-            {~lb}{~lb}/status{~rb}{~rb}
-
-            <ul>
-                <li>
-                    {~lb}{~lb}#description{~rb}{~rb}
-                    <p>{~lb}{~lb}description{~rb}{~rb}</p>
-                    {~lb}{~lb}/description{~rb}{~rb}
-                </li>
-
-                {~lb}{~lb}#language{~rb}{~rb}
-                <li>
-                    <h2>Language</h2>
-                    <ol>
-                        <li><b>{~lb}{~lb}language{~rb}{~rb}:</b></li>
-                    </ol>
-                </li>
-                {~lb}{~lb}/language{~rb}{~rb}
-
-                {~lb}{~lb}#cluster{~rb}{~rb}
-                <li>
-                    <h2>Cluster</h2>
-                    <ol>
-                        <li><b>{~lb}{~lb}cluster{~rb}{~rb}:</b></li>
-                    </ol>
-                </li>
-                {~lb}{~lb}/cluster{~rb}{~rb}
-
-                {~lb}{~lb}#datacenters{~rb}{~rb}
-                <li>
-                    <h2>Datacenter</h2>
-                    <ol>
-                        <li>
-                            <b>{~lb}{~lb}provider{~rb}{~rb}</b> <br>
-
-                            {~lb}{~lb}#region{~rb}{~rb}
-                            <span class="tag">{~lb}{~lb}region{~rb}{~rb}</span> 
-                            {~lb}{~lb}/region{~rb}{~rb}
-
-                            {~lb}{~lb}#zone{~rb}{~rb}
-                            <span class="tag">{~lb}{~lb}zone{~rb}{~rb}</span> 
-                            {~lb}{~lb}/zone{~rb}{~rb}
-                        </li>
-                    </ol>
-                </li>
-                {~lb}{~lb}/datacenters{~rb}{~rb}
-
-                {~lb}{~lb}#hasEntry{~rb}{~rb}
-                <li>
-                    <h2>Entry Apps</h2>
-                    <ol>
-                    {~lb}{~lb}#entry{~rb}{~rb}
-                        <li>
-                            {~lb}{~lb}name{~rb}{~rb} by <b>{~lb}{~lb}endpoint{~rb}{~rb}</b> <br>
-                            <span class="tag">{~lb}{~lb}family{~rb}{~rb}</span> <span class="tag">{~lb}{~lb}environment{~rb}{~rb}</span>
-                        </li>
-                    {~lb}{~lb}/entry{~rb}{~rb}
-                    </ol>
-                </li>
-                {~lb}{~lb}/hasEntry{~rb}{~rb}
-
-                {~lb}{~lb}#hasContacts{~rb}{~rb}
-                <li>
-                    <h2>Contacts</h2>
-                    <ol>
-                    {~lb}{~lb}#contacts{~rb}{~rb}
-                        <li><b>{~lb}{~lb}channel{~rb}{~rb}:</b> {~lb}{~lb}value{~rb}{~rb}</li>
-                    {~lb}{~lb}/contacts{~rb}{~rb}
-                    </ol>
-                </li>
-                {~lb}{~lb}/hasContacts{~rb}{~rb}
-
-                {~lb}{~lb}#hasTags{~rb}{~rb}
-                <li>
-                    <h2>Tags</h2>
-                    <ol>
-                    {~lb}{~lb}#tags{~rb}{~rb}
-                        <li><b>{~lb}{~lb}key{~rb}{~rb}:</b> {~lb}{~lb}value{~rb}{~rb}</li>
-                    {~lb}{~lb}/tags{~rb}{~rb}
-                    </ol>
-                </li>
-                {~lb}{~lb}/hasTags{~rb}{~rb}
-
-                <li>
-                    <h2>Owner</h2>
-                    <p>{~lb}{~lb}owner.email{~rb}{~rb}</p>
-                </li>
-                <li>
-                    <h2>Update at</h2>
-                    <p>{~lb}{~lb}updated_at{~rb}{~rb}</p>
-                </li>
-                <li>
-                    <h2>Create at</h2>
-                    <p>{~lb}{~lb}created_at{~rb}{~rb}</p>
-                </li>
-            </ul>
+        <div class="tb-btn">
+            <span>></span>
         </div>
-    </script>
+    </a>
+</script>
 
-    <script src="/js/app.js"></script>
+<script id="tpl_menu" type="text/template">
+    <ul class="menu">
+        <li class="title">
+            <h1>{~lb}{~lb}name{~rb}{~rb}</h1>
+        </li>
+        <li class="histograms">
+            <h2>Histogram</h2>
+            <div class="hist">
+                {~lb}{~lb}#hist{~rb}{~rb}
+                <div style="height: {~lb}{~lb}h{~rb}{~rb}px"><p>{~lb}{~lb}value{~rb}{~rb}</p></div>
+                {~lb}{~lb}/hist{~rb}{~rb}
+            </div>
+        </li>
+        <li class="info">
+            <h2>Info</h2>
+            <ol>
+                <li><b>Density:</b> {~lb}{~lb}info.density{~rb}{~rb}</li>
+                <li><b>Conections:</b> {~lb}{~lb}info.conections{~rb}{~rb}</li>
+                <li><b>Servers:</b> {~lb}{~lb}iservers.total{~rb}{~rb}</li>
+                <li><b>Apps:</b> {~lb}{~lb}ifamilies.total{~rb}{~rb}</li>
+            </ol>
+        </li>
+        <li class="families">
+            <h2>Types</h2>
+            <ol>
+                {~lb}{~lb}#families{~rb}{~rb}
+                <li><b>{~lb}{~lb}name{~rb}{~rb}:</b> {~lb}{~lb}qtd{~rb}{~rb}</li>
+                {~lb}{~lb}/families{~rb}{~rb}
+            </ol>
+        </li>
+        {~lb}{~lb}#hasSystems{~rb}{~rb}
+        <li class="system">
+            <h2>Systems <span class="number">({~lb}{~lb}isystems.total{~rb}{~rb})</span></h2>
+            <ul>
+                {~lb}{~lb}#isystems.items{~rb}{~rb}
+                <li><a href="#" data-id="{~lb}{~lb}_id{~rb}{~rb}" data-type="system" class="get_info">{~lb}{~lb}name{~rb}{~rb}</a>
+                </li>
+                {~lb}{~lb}/isystems.items{~rb}{~rb}
+            </ul>
+        </li>
+        {~lb}{~lb}/hasSystems{~rb}{~rb}
+
+        {~lb}{~lb}#hasClients{~rb}{~rb}
+        <li class="clients">
+            <h2>Clients <span class="number">({~lb}{~lb}iclients.total{~rb}{~rb})</span></h2>
+            <ul>
+                {~lb}{~lb}#iclients.items{~rb}{~rb}
+                <li><a href="#" data-id="{~lb}{~lb}_id{~rb}{~rb}" data-type="clients" class="get_info">{~lb}{~lb}name{~rb}{~rb}</a>
+                </li>
+                {~lb}{~lb}/iclients.items{~rb}{~rb}
+            </ul>
+        </li>
+        {~lb}{~lb}/hasClients{~rb}{~rb}
+    </ul>
+
+    <a href="http://maestroserver.io" target="_blank" class="footer">Powered by<br/> Maestro Server</a>
+</script>
+
+<script id="tpl_info" type="text/template">
+    <div class="half">
+        <h1>{~lb}{~lb}name{~rb}{~rb}</h1>
+
+        {~lb}{~lb}#family{~rb}{~rb}
+        <p class="tag tag-primary">{~lb}{~lb}family{~rb}{~rb}</p>
+        {~lb}{~lb}/family{~rb}{~rb}
+
+        {~lb}{~lb}#environment{~rb}{~rb}
+        <span class="tag">{~lb}{~lb}environment{~rb}{~rb}</span>
+        {~lb}{~lb}/environment{~rb}{~rb}
+
+        {~lb}{~lb}#provider{~rb}{~rb}
+        <span class="tag">{~lb}{~lb}provider{~rb}{~rb}</span>
+        {~lb}{~lb}/provider{~rb}{~rb}
+
+        {~lb}{~lb}#engine{~rb}{~rb}
+        <span class="tag">{~lb}{~lb}engine{~rb}{~rb}</span>
+        {~lb}{~lb}/engine{~rb}{~rb}
+
+        {~lb}{~lb}#status{~rb}{~rb}
+        <span class="tag">{~lb}{~lb}status{~rb}{~rb}</span>
+        {~lb}{~lb}/status{~rb}{~rb}
+
+        <ul>
+            <li>
+                {~lb}{~lb}#description{~rb}{~rb}
+                <p>{~lb}{~lb}description{~rb}{~rb}</p>
+                {~lb}{~lb}/description{~rb}{~rb}
+            </li>
+
+            {~lb}{~lb}#language{~rb}{~rb}
+            <li>
+                <h2>Language</h2>
+                <ol>
+                    <li><b>{~lb}{~lb}language{~rb}{~rb}:</b></li>
+                </ol>
+            </li>
+            {~lb}{~lb}/language{~rb}{~rb}
+
+            {~lb}{~lb}#cluster{~rb}{~rb}
+            <li>
+                <h2>Cluster</h2>
+                <ol>
+                    <li><b>{~lb}{~lb}cluster{~rb}{~rb}:</b></li>
+                </ol>
+            </li>
+            {~lb}{~lb}/cluster{~rb}{~rb}
+
+            {~lb}{~lb}#datacenters{~rb}{~rb}
+            <li>
+                <h2>Datacenter</h2>
+                <ol>
+                    <li>
+                        <b>{~lb}{~lb}provider{~rb}{~rb}</b> <br>
+
+                        {~lb}{~lb}#region{~rb}{~rb}
+                        <span class="tag">{~lb}{~lb}region{~rb}{~rb}</span>
+                        {~lb}{~lb}/region{~rb}{~rb}
+
+                        {~lb}{~lb}#zone{~rb}{~rb}
+                        <span class="tag">{~lb}{~lb}zone{~rb}{~rb}</span>
+                        {~lb}{~lb}/zone{~rb}{~rb}
+                    </li>
+                </ol>
+            </li>
+            {~lb}{~lb}/datacenters{~rb}{~rb}
+
+            {~lb}{~lb}#hasEntry{~rb}{~rb}
+            <li>
+                <h2>Entry Apps</h2>
+                <ol>
+                    {~lb}{~lb}#entry{~rb}{~rb}
+                    <li>
+                        {~lb}{~lb}name{~rb}{~rb} by <b>{~lb}{~lb}endpoint{~rb}{~rb}</b> <br>
+                        <span class="tag">{~lb}{~lb}family{~rb}{~rb}</span> <span class="tag">{~lb}{~lb}environment{~rb}{~rb}</span>
+                    </li>
+                    {~lb}{~lb}/entry{~rb}{~rb}
+                </ol>
+            </li>
+            {~lb}{~lb}/hasEntry{~rb}{~rb}
+
+            {~lb}{~lb}#hasContacts{~rb}{~rb}
+            <li>
+                <h2>Contacts</h2>
+                <ol>
+                    {~lb}{~lb}#contacts{~rb}{~rb}
+                    <li><b>{~lb}{~lb}channel{~rb}{~rb}:</b> {~lb}{~lb}value{~rb}{~rb}</li>
+                    {~lb}{~lb}/contacts{~rb}{~rb}
+                </ol>
+            </li>
+            {~lb}{~lb}/hasContacts{~rb}{~rb}
+
+            {~lb}{~lb}#hasTags{~rb}{~rb}
+            <li>
+                <h2>Tags</h2>
+                <ol>
+                    {~lb}{~lb}#tags{~rb}{~rb}
+                    <li><b>{~lb}{~lb}key{~rb}{~rb}:</b> {~lb}{~lb}value{~rb}{~rb}</li>
+                    {~lb}{~lb}/tags{~rb}{~rb}
+                </ol>
+            </li>
+            {~lb}{~lb}/hasTags{~rb}{~rb}
+
+            <li>
+                <h2>Owner</h2>
+                <p>{~lb}{~lb}owner.email{~rb}{~rb}</p>
+            </li>
+            <li>
+                <h2>Update at</h2>
+                <p>{~lb}{~lb}updated_at{~rb}{~rb}</p>
+            </li>
+            <li>
+                <h2>Create at</h2>
+                <p>{~lb}{~lb}created_at{~rb}{~rb}</p>
+            </li>
+        </ul>
+    </div>
+</script>
+
+<script src="/js/app.js"></script>
 
 </body>
 </html>

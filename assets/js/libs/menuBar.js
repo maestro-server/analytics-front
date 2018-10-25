@@ -31,7 +31,7 @@ function MenuBar() {
 
     function map_families(k, v) {
         return {'name': v, 'qtd': k};
-    }
+    };
 
     this.open = function(result) {
         result['families'] = _.map(_.get(result, 'ifamilies.items'), map_families);
