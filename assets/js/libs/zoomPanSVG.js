@@ -11,7 +11,6 @@ function ZoomPanSVG() {
 
     function ajustZoom() {
         var qtd = MetaInfo('total', 4);
-        console.log(qtd);
 
         if (qtd<4) {
             panZoom.zoomBy(qtd/4);
