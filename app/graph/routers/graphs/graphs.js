@@ -13,6 +13,23 @@ module.exports = function (router) {
 
     router
         /**
+         *
+         * @api {get} / Ping
+         * @apiName GetPing
+         * @apiGroup Ping
+         *
+         *
+         * @apiSuccessExample {json} Success-Response:
+         *     HTTP/1.1 200 OK
+         *     {
+             *        app: (String),
+             *        description: (String),
+             *        version: (Float),
+             *        api_timeout: (Number)
+             *     }
+         */
+
+        /**
          * @api {get} /graphs/:id a. Show UI Graph
          * @apiName GetUIGraph
          * @apiGroup Graphs
