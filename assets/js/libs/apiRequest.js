@@ -4,9 +4,13 @@ var $ = require('jquery');
 var MetaInfo = require('./metaInfo.js');
 
 
-function ApiRequest(fn, query, uri) {
+function ApiRequest(fn, query, path) {
     var urlParams = new URLSearchParams(window.location.search);
     var jwt = urlParams.get('jwt');
+
+    var uri = window.location.pathname.split('/');
+    if(uri[1] == 'teams')
+        uri = uri[1] + '/' + uri[2] + '/' + path;
 
     $.ajax({
         url: MetaInfo('api') + '/' + uri + '/' + query,

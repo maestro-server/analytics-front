@@ -49,10 +49,6 @@ function MenuBar() {
 
     this.setup = function () {
         var end = 'graphs'
-        var uri = window.location.pathname.split('/');
-
-        if(uri[1] == 'teams')
-            end = uri[1] + '/' + uri[2] + '/' + end;
 
         ApiRequest(this.open, MetaInfo('id'), end);
     };
