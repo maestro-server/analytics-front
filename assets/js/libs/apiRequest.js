@@ -10,10 +10,10 @@ function ApiRequest(fn, query, path) {
 
     var uri = window.location.pathname.split('/');
     if(uri[1] == 'teams')
-        uri = uri[1] + '/' + uri[2] + '/' + path;
+        path = uri[1] + '/' + uri[2] + '/' + path;
 
     $.ajax({
-        url: MetaInfo('api') + '/' + uri + '/' + query,
+        url: MetaInfo('api') + '/' + path + '/' + query,
         headers: {
             'Authorization': 'jwt ' + jwt
         }
