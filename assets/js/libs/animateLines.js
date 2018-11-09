@@ -10,36 +10,42 @@ function AnimateLines(app) {
     var actived = false;
 
     var tooltip = $('#conn-tooltip');
+    var cache = [];
 
-    function animateMinis(path) {
-        var length = path.length();
-
-        var c = path.parent().ellipse(5, 4).fill(color).addClass('mini-ell');
-        var vel = 500 + length
-
+    function animateMinis(path, vel, length, c) {
         c.animate(vel, '<>').during(function (pos, morph, eased) {
             var p = path.pointAt(eased * length)
-
             c.move(p.x - 2.5, p.y - 2)
-        }).after(function () {
-            c.remove();
-        });
+        }).loop(true);
     }
 
     function startAnimation(target) {
         var path = SVG.adopt(target);
-        animateMinis(path);
+        var length = path.length();
 
-        var timer = setInterval(function () {
-            if (actived) {
-                animateMinis(path);
+        var qtd = Math.round(length / 60);
+        var vel = length * 2;
+        var sl = vel / qtd;
 
+        var id = $(target).parent().attr('id');
+
+        console.log(id)
+
+        if (cache.indexOf(id) === -1) {
+            var i = 0;
+            var timer = setInterval(function () {
                 if (!actived)
                     clearInterval(timer);
-            } else {
-                clearInterval(timer);
-            }
-        }, 100);
+
+                if (i <= qtd) {
+                    var ball = path.parent().ellipse(5, 4).fill(color).addClass('mini-ell');
+                    animateMinis(path, vel, length, ball);
+                    i++;
+                }
+            }, sl);
+
+            //cache.push(id);
+        }
     }
 
     function transfPath(target, stk, stkw) {
@@ -56,7 +62,7 @@ function AnimateLines(app) {
         var txt = $(target).parent().find('text');
         var ptxt = txt.text()
 
-        if(ptxt != 'None') {
+        if (ptxt != 'None') {
             tooltip
                 .offset({top: e.pageY, left: e.pageX})
                 .text(ptxt)
