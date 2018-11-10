@@ -9,6 +9,8 @@ function AppTooltip(app, clk=true) {
     var tooltip = $('#app-tooltip');
     var lock = null;
 
+    var connectors = $('.svg-pan-zoom_viewport .conector_h');
+
     function eachTspan(target) {
         var app = []
         $(target).find('tspan').each(function() {
@@ -36,11 +38,11 @@ function AppTooltip(app, clk=true) {
     }
 
     function activeLines(id) {
-        $('.conn-'+id).trigger('mouseenter');
+        connectors.filter('.conn-'+id).trigger('mouseenter');
     }
 
     function desactiveLines(id) {
-        $('.conn-'+id).trigger('mouseleave');
+        connectors.filter('.conn-'+id).trigger('mouseleave');
     }
 
     function hiddenTool(target) {
@@ -73,6 +75,7 @@ function AppTooltip(app, clk=true) {
 
     this.actived = function(e) {
         var id = $(this).attr('id');
+
 
         if (id != lock) {
             lock = id;

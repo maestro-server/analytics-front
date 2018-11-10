@@ -10,41 +10,64 @@ function AnimateLines(app) {
     var actived = false;
 
     var tooltip = $('#conn-tooltip');
-    var cache = [];
+
+    function resetPos(path, c) {
+        var init = path.pointAt(0)
+        c.finish();
+        c.move(init.x - 2.5, init.y - 2)
+    }
 
     function animateMinis(path, vel, length, c) {
+
         c.animate(vel, '<>').during(function (pos, morph, eased) {
             var p = path.pointAt(eased * length)
             c.move(p.x - 2.5, p.y - 2)
+
+            if(!actived)
+                resetPos(path, c);
+
         }).loop(true);
     }
 
-    function startAnimation(target) {
-        var path = SVG.adopt(target);
-        var length = path.length();
+    function generateSetInterval(path, length, qtd, balls) {
 
-        var qtd = Math.round(length / 60);
         var vel = length * 2;
         var sl = vel / qtd;
 
-        var id = $(target).parent().attr('id');
+        var i = 0;
+        var timer = setInterval(function () {
+            if(!actived)
+                clearInterval(timer);
 
-        console.log(id)
+            if (i <= qtd) {
+                if(balls[i] instanceof SVGEllipseElement)
+                    balls[i] = balls[i].instance
 
-        if (cache.indexOf(id) === -1) {
-            var i = 0;
-            var timer = setInterval(function () {
-                if (!actived)
-                    clearInterval(timer);
+                animateMinis(path, vel, length, balls[i]);
+                i++;
+            } else {
+                clearInterval(timer);
+            }
+        }, sl);
+    }
 
-                if (i <= qtd) {
+    function startAnimation(target) {
+
+        var path = SVG.adopt(target);
+        var length = path.length();
+
+        if(length > 0) {
+            var balls = $(target).parent().find('.mini-ell');
+            var qtd = Math.round(length / 70);
+
+            if (balls.length === 0) {
+                for(var z = 0; z<=qtd; z++) {
                     var ball = path.parent().ellipse(5, 4).fill(color).addClass('mini-ell');
-                    animateMinis(path, vel, length, ball);
-                    i++;
+                    balls.push(ball);
                 }
-            }, sl);
+            }
 
-            //cache.push(id);
+            generateSetInterval(path, length, qtd, balls);
         }
     }
 
@@ -84,7 +107,6 @@ function AnimateLines(app) {
 
     this.actived = function (e) {
         actived = true;
-
         if (!_.get(e, 'isTrigger'))
             showLabel(this, e);
 
