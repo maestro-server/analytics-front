@@ -14,12 +14,13 @@ function AnimateLines(app) {
     function resetPos(path, c) {
         var init = path.pointAt(0)
         c.finish();
-        c.move(init.x - 2.5, init.y - 2)
+        c.move(init.x - 2.5, init.y - 2);
+        c.hide();
     }
 
     function animateMinis(path, vel, length, c) {
 
-        c.animate(vel, '<>').during(function (pos, morph, eased) {
+        c.show().animate(vel, '<>').during(function (pos, morph, eased) {
             var p = path.pointAt(eased * length)
             c.move(p.x - 2.5, p.y - 2)
 
@@ -62,7 +63,7 @@ function AnimateLines(app) {
 
             if (balls.length === 0) {
                 for(var z = 0; z<=qtd; z++) {
-                    var ball = path.parent().ellipse(5, 4).fill(color).addClass('mini-ell');
+                    var ball = path.parent().ellipse(5, 4).hide().fill(color).addClass('mini-ell');
                     balls.push(ball);
                 }
             }

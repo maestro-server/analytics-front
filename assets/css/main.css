@@ -258,12 +258,14 @@ body {
     border-radius: 3px;
     display: inline-block;
     color: #fff;
+    min-width: 130px;
 }
 
 .apptlp ul {
     position: relative;
     display: inline-block;
-    max-width: 200px;
+    min-width: 130px;
+    max-width: 250px;
 }
 
 .apptlp ul li {

@@ -13,7 +13,7 @@ function ZoomPanSVG() {
         var qtd = MetaInfo('total', 4);
 
         if (qtd<4) {
-            panZoom.zoomBy(qtd/4);
+            //panZoom.zoomBy(qtd/4);
         }
     };
 

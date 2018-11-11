@@ -186,8 +186,20 @@
                 <ol>
                     {~lb}{~lb}#entry{~rb}{~rb}
                     <li>
-                        {~lb}{~lb}name{~rb}{~rb} by <b>{~lb}{~lb}endpoint{~rb}{~rb}</b> <br>
-                        <span class="tag">{~lb}{~lb}family{~rb}{~rb}</span> <span class="tag">{~lb}{~lb}environment{~rb}{~rb}</span>
+                        {~lb}{~lb}name{~rb}{~rb}
+
+                        {~lb}{~lb}#endpoint{~rb}{~rb}
+                            by <b>{~lb}{~lb}endpoint{~rb}{~rb}</b>
+                        {~lb}{~lb}/endpoint{~rb}{~rb}
+                        <br>
+
+                        {~lb}{~lb}#family{~rb}{~rb}
+                            <span class="tag">{~lb}{~lb}family{~rb}{~rb}</span>
+                        {~lb}{~lb}/family{~rb}{~rb}
+
+                        {~lb}{~lb}#environment{~rb}{~rb}
+                            <span class="tag">{~lb}{~lb}environment{~rb}{~rb}</span>
+                        {~lb}{~lb}/environment{~rb}{~rb}
                     </li>
                     {~lb}{~lb}/entry{~rb}{~rb}
                 </ol>

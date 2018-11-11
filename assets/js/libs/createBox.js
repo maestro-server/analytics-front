@@ -9,7 +9,7 @@ var ApiRequest = require('./apiRequest.js');
 function CreateBox() {
 
     function check(data, filter) {
-        return _.get(data, filter);
+        return _.has(data, filter);
     }
 
     function createBox(data) {
