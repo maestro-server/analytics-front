@@ -1,6 +1,6 @@
 {
   "name": "analytics-front",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Analytics Front - Maestro Server",
   "author": "Felipe Klerk Signorini &lt;felipeklerk@yahoo.com.br&gt;",
   "main": "server.js",
