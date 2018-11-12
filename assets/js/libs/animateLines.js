@@ -32,7 +32,7 @@ function AnimateLines(app) {
 
     function generateSetInterval(path, length, qtd, balls) {
 
-        var vel = length * 2;
+        var vel = length * 1.6;
         var sl = vel / qtd;
 
         var i = 0;
@@ -59,7 +59,7 @@ function AnimateLines(app) {
 
         if(length > 0) {
             var balls = $(target).parent().find('.mini-ell');
-            var qtd = Math.round(length / 70);
+            var qtd = Math.round(length / 60);
 
             if (balls.length === 0) {
                 for(var z = 0; z<=qtd; z++) {

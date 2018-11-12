@@ -9,14 +9,6 @@ function ZoomPanSVG() {
 
     var panZoom = null;
 
-    function ajustZoom() {
-        var qtd = MetaInfo('total', 4);
-
-        if (qtd<4) {
-            //panZoom.zoomBy(qtd/4);
-        }
-    };
-
     this.setup = function () {
         panZoom = svgPanZoom('#graph', {
             zoomEnabled: true,
@@ -27,13 +19,10 @@ function ZoomPanSVG() {
             maxZoom:4
         });
 
-        ajustZoom();
-
         $(window).resize(function() {
             panZoom.resize();
             panZoom.fit();
             panZoom.center();
-            ajustZoom();
         });
     };
 }
