@@ -53,6 +53,18 @@ const UploaderRepository = () => {
             });
         },
 
+        deleteFiles(folder, filename) {
+
+            return new Promise((resolve, reject) => {
+                const relPath = `${newPath}/${folder}`;
+                const fullpath = `${relPath}/${filename}`;
+
+                fs.unlink(fullpath)
+                    .then(resolve)
+                    .catch(reject);
+            });
+        },
+
         convertSvgToPng(folder, filename, ext) {
 
             return new Promise((resolve, reject) => {

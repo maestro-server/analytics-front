@@ -39,6 +39,18 @@ const UploaderService = (Entity, owner, ext = 'html', dfolder='graphs-bussiness'
             });
         },
 
+        deleteImage(fext = ext) {
+
+            return new Promise((resolve, reject) => {
+                const filename = `${owner}.${fext}`;
+
+                return UploaderRepository
+                    .deleteFiles(folder, filename)
+                    .then(resolve)
+                    .catch(reject);
+            });
+        },
+
         convertSvgToPng(fext = ext) {
 
             return new Promise((resolve, reject) => {

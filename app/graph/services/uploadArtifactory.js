@@ -8,11 +8,25 @@ module.exports = (Entity) => (out, _id, ext='html') => (FUploadService = DUpload
 
     const UploadService = FUploadService;
 
-    return new Promise((resolve, reject) => {
+    return {
+        upload() {
+            return new Promise((resolve, reject) => {
 
-        UploadService(Entity, _id)
-            .uploadImage(out, ext)
-            .then(resolve)
-            .catch(reject);
-    });
+                UploadService(Entity, _id)
+                    .uploadImage(out, ext)
+                    .then(resolve)
+                    .catch(reject);
+            });
+        },
+
+        del() {
+            return new Promise((resolve, reject) => {
+
+                UploadService(Entity, _id)
+                    .deleteImage(ext)
+                    .then(resolve)
+                    .catch(reject);
+            });
+        }
+    }
 };
