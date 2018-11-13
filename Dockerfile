@@ -1,4 +1,4 @@
-FROM keymetrics/pm2:8-alpine
+FROM keymetrics/pm2:8-jessie
 MAINTAINER maestro@maestroserver.io
 
 # Bundle APP files
@@ -14,10 +14,8 @@ COPY pm2.json .
 COPY server.js .
 
 RUN mkdir -p /data/artifacts/graphs-bussiness
-
-RUN apk --no-cache add --virtual native-deps g++ gcc libgcc libstdc++ linux-headers make python tini
 RUN npm install --only=production
-RUN npm rebuild bcrypt --build-from-source
+
 
 ENTRYPOINT ["/sbin/tini","-g","--"]
 CMD ["docker-entrypoint.sh"]
