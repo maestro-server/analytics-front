@@ -16,7 +16,7 @@
     "lint": "gulp eslint",
     "tdd": "gulp tdd",
     "package": "docker build -t 'analytics-front-maestro' .",
-    "docs-graph": "gulp apidocs --name graph",
+    "docs": "gulp apidocs --name graph",
     "coverage": "nyc --reporter=lcov mocha test/**/*js --timeout 5000 --exit"
   },
   "dependencies": {
