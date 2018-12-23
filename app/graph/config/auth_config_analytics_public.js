@@ -3,7 +3,7 @@
 const {ExtractJwt} = require('passport-jwt');
 
 module.exports = () => {
-    const secret = process.env.MAESTRO_SECRETJWT_PUBLIC_ANALYTICS;
+    const secret = process.env.MAESTRO_SECRETJWT_PUBLIC;
 
     return {
         jwtSecret: {

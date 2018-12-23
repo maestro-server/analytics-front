@@ -97,7 +97,7 @@ module.exports = function (router) {
          * @apiParam (Body x-www) {String} [payload] XML/Svg text (Will be used to create a new file)
          *
          *
-         * @apiPermission JWT Analytics (Contract)
+         * @apiPermission JWT Private (MAESTRO_SECRETJWT_PRIVATE)
          * @apiHeader (Header) {String} Authorization JWT {Token}
          *
          * @apiError (Error) PermissionError Token don`t have permission
