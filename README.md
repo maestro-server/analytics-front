@@ -23,7 +23,7 @@ Analytics Front App is front end of analytics graph of Maestro Server, yours res
 
 We using DDD to organize the code, has infra, repositories, entities (values objects), interfaces, application, and domain.
 
-![arch](http://docs.maestroserver.io/en/latest/_images/fluxo_data.png)
+![arch](http://docs.maestroserver.io/en/latest/_images/analytics_front.png)
 
 Constructed with KrakenJs, we create a lot of middleware and organize by domain.
 
