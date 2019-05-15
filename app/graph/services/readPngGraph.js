@@ -10,7 +10,7 @@ module.exports = (Entity, id) => (UploadService) => {
         Upload.readImage()
             .then(resolve)
             .catch((e) => {
-                if (e.code == 'ENOENT' || e.code == 'AccessDenied') {
+                if (e.code == 'ENOENT' || e.code == 'AccessDenied' || e.code == 'NoSuchKey') {
                     Upload
                         .convertSvgToPng('png')
                         .then(resolve)
