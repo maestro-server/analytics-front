@@ -71,8 +71,6 @@ const UploaderRepository = () => {
                 const s3 = new aws.S3();
                 const S3_BUCKET = process.env.AWS_S3_BUCKET_NAME;
 
-                console.log(`${folder}/${filename}`)
-
                 s3.deleteObject({
                     Bucket: S3_BUCKET,
                     Key: `${folder}/${filename}`
