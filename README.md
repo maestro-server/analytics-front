@@ -51,7 +51,7 @@ Constructed with KrakenJs, we create a lot of middleware and organize by domain.
 #### Installation by docker ####
 
 ```bash
-docker run -p 9999:9999  -e "MAESTRO_MONGO_URI=mongodb" -e "MAESTRO_MONGO_DATABASE=maestro-client"  maestroserver/analytics-front-maestro
+docker run -p 9999:9999  -e "MAESTRO_MONGO_URI=mongodb://mongodb" -e "MAESTRO_MONGO_DATABASE=maestro-client"  maestroserver/analytics-front-maestro
 ```
 Or by docker-compose
 
@@ -64,7 +64,7 @@ services:
     ports:
     - "9999:9999"
     environment:
-    - "MAESTRO_MONGO_URI=mongodb"
+    - "MAESTRO_MONGO_URI=mongodb://mongodb"
     - "MAESTRO_MONGO_DATABASE=maestro-client"
 ```
 
@@ -74,7 +74,7 @@ Configure database and port application in .env file
 
 ```bash
 MAESTRO_PORT=9999
-MAESTRO_MONGO_URI='localhost'
+MAESTRO_MONGO_URI='mongodb://localhost'
 MAESTRO_MONGO_DATABASE='maestro-client'
 ```
 
@@ -105,7 +105,7 @@ gulp eslint
 | MAESTRO_PORT                 | 9999                     |                                            |
 | API_URL                      | http://localhost:8888    | Server app Url                             |
 | NODE_ENV                     | development|production   |                                            |
-| MAESTRO_MONGO_URI            | localhost                | DB string connection                       |
+| MAESTRO_MONGO_URI            | mongodb://localhost      | DB string connection                       |
 | MAESTRO_MONGO_DATABASE       | maestro-client           | Database name                              |
 |                              |                          |                                            |
 | MAESTRO_SECRETJWT            | XXXX                     | Secret key - session                       |
