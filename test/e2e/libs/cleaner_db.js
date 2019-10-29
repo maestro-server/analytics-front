@@ -1,8 +1,9 @@
-"use strict";
+'use strict';
 
 const _ = require('lodash');
 let MongoClient = require("mongodb").MongoClient;
-const dbpath = require('core/libs/dbpath')();
+const dbpath = require('../../../app/core/libs/dbpath')();
+const dbname = require('../../../app/core/libs/dbname')();
 
 const interactC = function (db, collections) {
   let pros=[];
@@ -18,7 +19,7 @@ const interactC = function (db, collections) {
     }
 
     db.collection(collection.tb, ids, (err1, coll) => {
-        pros.push(coll.remove({}));
+        pros.push(coll.deleteMany({}));
     });
 
   });
@@ -27,17 +28,21 @@ const interactC = function (db, collections) {
 };
 
 module.exports = function (collections, done, mock, conn = dbpath) {
+  const strOpts = {
+    useUnifiedTopology: true,
+    useNewUrlParser: true
+  };
 
-    MongoClient.connect('mongodb://'+conn)
-        .then((db) => {
+  MongoClient.connect(conn, strOpts)
+      .then((client) => {
+        const db = client.db(dbname);
+        const pros = interactC(db, collections);
 
-          const pros = interactC(db, collections);
-
-          Promise.all(pros)
-            .then(() => {
-              done();
-              db.close();
-              //mock.close(done);
-            });
-        });
+        Promise.all(pros)
+          .then(() => {
+            done();
+            client.close();
+            //mock.close(done);
+          });
+      });
 };
