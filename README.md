@@ -119,8 +119,8 @@ gulp eslint
 | AWS_DEFAULT_REGION           | us-east-1                |                                            |
 | AWS_S3_BUCKET_NAME           | maestroserver            |                                            |
 | MAESTRO_UPLOAD_TYPE          | S3/Local                 | Upload mode                                |
-| LOCAL_DIR                    | /public/static/          | Where files will be uploaded               |
-| PWD                          | $rootDirectory           | PWD process                                |
+| LOCAL_DIR                    | /artifacts               | Where files will be uploaded               |
+| MAESTRO_TMP                  | $rootDirectory           | PWD process                                |
 
 ### Contribute ###
 
