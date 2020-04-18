@@ -7,7 +7,6 @@ node_modules
 .idea/
 .happypack/
 public/static/
-public/*
 npm-debug*
 coverage/
 .nyc_output/
