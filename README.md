@@ -121,7 +121,7 @@ gulp eslint
 | MAESTRO_UPLOAD_TYPE          | S3/Local                 | Upload mode                                |
 | LOCAL_DIR                    | /artifacts               | Where files will be uploaded               |
 | MAESTRO_TMP                  | $rootDirectory           | PWD process                                |
-| ANALYTICS_API_URL            | "                        | Application base URL                       |
+| ANALYTICS_URL                | "                        | Application base URL                       |
 
 ### Contribute ###
 
