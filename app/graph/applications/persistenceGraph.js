@@ -11,11 +11,11 @@ const ApplicationAnalytics = (Entity, PersistenceServices = DPersistenceServices
 
     return {
         create(req, res, next) {
-            const hostname = _.get(req, 'headers.referer', '');
+            const hostname = process.env.ANALYTICS_API_URL || '';
             const api_url = process.env.API_URL || 'http://localhost:8888';
 
             const data = Object.assign({}, req.body, req.user, {hostname}, {api_url});
-            
+
             if (_.has(data, 'graph_id') && _.has(data, 'owner_id')) {
                 res.render('index', data, (err, out) => {
                     if (err)
@@ -27,7 +27,7 @@ const ApplicationAnalytics = (Entity, PersistenceServices = DPersistenceServices
                     UploadArtifactory(Entity)('', graph_id, 'png')()
                         .del()
                         .catch((e)=>console.info(_.get(e, 'message')));
-                    
+
                     Promise.all([
                         UploadArtifactory(Entity)(out, graph_id)().upload(),
                         UploadArtifactory(Entity)(payload, graph_id, 'svg')().upload()

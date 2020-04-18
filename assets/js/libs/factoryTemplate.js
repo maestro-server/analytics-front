@@ -6,7 +6,7 @@ var Mustache = require('mustache');
 
 function FactoryTemplate(id, obj, data) {
     var template = $(id).html();
-    var html = Mustache.to_html(template, data);
+    var html = Mustache.render(template, data);
 
     obj.html(html);
     return obj;
