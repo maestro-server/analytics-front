@@ -11,8 +11,7 @@ const ApplicationAnalytics = (Entity, PersistenceServices = DPersistenceServices
 
     return {
         create(req, res, next) {
-            const port = process.env.MAESTRO_PORT;
-            const hostname = `${req.protocol}://${_.get(req, 'headers.host')}:${port}`;
+            const hostname = _.get(req, 'headers.referer', '');
             const api_url = process.env.API_URL || 'http://localhost:8888';
 
             const data = Object.assign({}, req.body, req.user, {hostname}, {api_url});
