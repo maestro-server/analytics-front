@@ -16,7 +16,6 @@ test
 .idea/
 .happypack/
 public/static/
-public/*
 coverage/
 .nyc_output/
 artifacts/
