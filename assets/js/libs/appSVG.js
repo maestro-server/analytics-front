@@ -22,12 +22,13 @@ function AppSVG(svg) {
     this.setup = function() {
         var urlParams = new URLSearchParams(window.location.search);
         var jwt = urlParams.get('jwt');
+        var hm = urlParams.get('hm');
 
         new ZoomPanSVG().setup();
 
         this.setupSVGObject();
 
-        if (window.matchMedia("(min-width: 700px)").matches) {
+        if (hm) {
             new AppTooltip(this.root, jwt).setup();
             new AnimateLines(this.app).setup();
 
