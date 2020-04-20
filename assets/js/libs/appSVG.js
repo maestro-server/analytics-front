@@ -28,7 +28,7 @@ function AppSVG(svg) {
 
         this.setupSVGObject();
 
-        if (hm || window.matchMedia("(min-width: 700px)").matches) {
+        if (hm && window.matchMedia("(min-width: 700px)").matches) {
             new AppTooltip(this.root, jwt).setup();
             new AnimateLines(this.app).setup();
 
