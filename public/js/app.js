@@ -33,7 +33,7 @@ function AnimateLines(app) {
 
     function generateSetInterval(path, length, qtd, balls) {
 
-        var vel = length * 1.6;
+        var vel = length * 4;
         var sl = vel / qtd;
 
         var i = 0;
@@ -53,24 +53,32 @@ function AnimateLines(app) {
         }, sl);
     }
 
+    var cache = {}
+
     function startAnimation(target) {
 
         var path = SVG.adopt(target);
         var length = path.length();
 
-        if(length > 0) {
-            var balls = $(target).parent().find('.mini-ell');
-            var qtd = Math.round(length / 60);
+        var balls = $(target).parent().find('.mini-ell');
+        var key= btoa($(target).attr('d'));
+        var qtd = 2;
+        
 
-            if (balls.length === 0) {
-                for(var z = 0; z<=qtd; z++) {
-                    var ball = path.parent().ellipse(5, 4).hide().fill(color).addClass('mini-ell');
-                    balls.push(ball);
-                }
-            }
-
-            generateSetInterval(path, length, qtd, balls);
+        if(_.get(cache, key)) {
+            balls = cache[key];
         }
+
+        if (balls.length === 0) {
+            for(var z = 0; z<=qtd; z++) {
+                var ball = path.parent().ellipse(5, 4).hide().fill(color).addClass('mini-ell');
+                balls.push(ball);
+            }
+            cache[target.name] = balls
+        }
+
+        generateSetInterval(path, length, qtd, balls);
+
     }
 
     function transfPath(target, stk, stkw) {
@@ -125,6 +133,7 @@ function AnimateLines(app) {
 }
 
 module.exports = AnimateLines;
+
 },{"jquery":11,"lodash":12,"svg.js":21}],2:[function(require,module,exports){
 'use strict';
 
@@ -175,12 +184,13 @@ function AppSVG(svg) {
     this.setup = function() {
         var urlParams = new URLSearchParams(window.location.search);
         var jwt = urlParams.get('jwt');
+        var hm = urlParams.get('hm');
 
         new ZoomPanSVG().setup();
 
         this.setupSVGObject();
 
-        if (window.matchMedia("(min-width: 700px)").matches) {
+        if (hm && window.matchMedia("(min-width: 700px)").matches) {
             new AppTooltip(this.root, jwt).setup();
             new AnimateLines(this.app).setup();
 

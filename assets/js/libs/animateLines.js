@@ -8,6 +8,7 @@ var SVG = require('svg.js');
 function AnimateLines(app) {
     var color = "#6b2626";
     var actived = false;
+    var cache = {}
 
     var tooltip = $('#conn-tooltip');
 
@@ -32,7 +33,7 @@ function AnimateLines(app) {
 
     function generateSetInterval(path, length, qtd, balls) {
 
-        var vel = length * 1.6;
+        var vel = length * 4;
         var sl = vel / qtd;
 
         var i = 0;
@@ -52,24 +53,31 @@ function AnimateLines(app) {
         }, sl);
     }
 
+
+
     function startAnimation(target) {
 
         var path = SVG.adopt(target);
         var length = path.length();
 
-        if(length > 0) {
-            var balls = $(target).parent().find('.mini-ell');
-            var qtd = Math.round(length / 60);
+        var balls = $(target).parent().find('.mini-ell');
+        var key= btoa($(target).attr('d'));
+        var qtd = 2;
 
-            if (balls.length === 0) {
-                for(var z = 0; z<=qtd; z++) {
-                    var ball = path.parent().ellipse(5, 4).hide().fill(color).addClass('mini-ell');
-                    balls.push(ball);
-                }
-            }
-
-            generateSetInterval(path, length, qtd, balls);
+        if(_.get(cache, key)) {
+            balls = cache[key];
         }
+
+        if (balls.length === 0) {
+            for(var z = 0; z<=qtd; z++) {
+                var ball = path.parent().ellipse(5, 4).hide().fill(color).addClass('mini-ell');
+                balls.push(ball);
+            }
+            cache[target.name] = balls
+        }
+
+        generateSetInterval(path, length, qtd, balls);
+
     }
 
     function transfPath(target, stk, stkw) {

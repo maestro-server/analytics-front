@@ -1,4 +1,4 @@
-/* http://meyerweb.com/eric/tools/css/reset/ 
+/* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
 
@@ -55,7 +55,7 @@ table {
     border-spacing: 0;
 }
 
-/* 
+/*
     ===================== Layout
 */
 h1 {
@@ -188,7 +188,7 @@ body {
     background: rgba(103, 32, 100, 0.6);
     border: 1px solid #672064;
     align-self: flex-end;
-    
+
     color: #fff;
 
     position: relative;
