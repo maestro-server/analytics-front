@@ -8,7 +8,6 @@ var SVG = require('svg.js');
 function AnimateLines(app) {
     var color = "#6b2626";
     var actived = false;
-    var cache = {}
 
     var tooltip = $('#conn-tooltip');
 
@@ -61,19 +60,13 @@ function AnimateLines(app) {
         var length = path.length();
 
         var balls = $(target).parent().find('.mini-ell');
-        var key= btoa($(target).attr('d'));
         var qtd = 2;
-
-        if(_.get(cache, key)) {
-            balls = cache[key];
-        }
 
         if (balls.length === 0) {
             for(var z = 0; z<=qtd; z++) {
                 var ball = path.parent().ellipse(5, 4).hide().fill(color).addClass('mini-ell');
                 balls.push(ball);
             }
-            cache[target.name] = balls;
         }
 
         generateSetInterval(path, length, qtd, balls);
