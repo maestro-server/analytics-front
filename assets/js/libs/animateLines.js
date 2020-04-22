@@ -73,7 +73,7 @@ function AnimateLines(app) {
                 var ball = path.parent().ellipse(5, 4).hide().fill(color).addClass('mini-ell');
                 balls.push(ball);
             }
-            cache[target.name] = balls
+            cache[target.name] = balls;
         }
 
         generateSetInterval(path, length, qtd, balls);
