@@ -15,19 +15,17 @@ To test out the demo, [Demo Online](http://demo.maestroserver.io "Demo Online")
 
 # Maestro Server - Analytics Front #
 
-Analytics Front App is front end of analytics graph of Maestro Server, yours responsibility is:
+Analytics Front Application is accountable to expose diagrams to the user:
 
- - Authentication
- - Show graphs SVGs
- - Upload internal SVGs of analytics
-
-We using DDD to organize the code, has infra, repositories, entities (values objects), interfaces, application, and domain.
+* Public/private authorization
+* Expose svgs diagrams
+* Upload private SVGs
 
 ![arch](http://docs.maestroserver.io/en/latest/_images/analytics_front.png)
 
 Constructed with KrakenJs, we create a lot of middleware and organize by domain.
 
-**Core API, organized by modules:**
+**Core API:**
 
 * Core
 * Authetication
@@ -40,7 +38,7 @@ Constructed with KrakenJs, we create a lot of middleware and organize by domain.
 * RabbitMQ
 * AWS S3 (If using S3 upload)
 
-## Service relations ##
+## Connect to: ##
 
 * Maestro Analytics
 * Maestro Server App
