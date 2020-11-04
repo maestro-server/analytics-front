@@ -38,7 +38,7 @@
     "jwt-simple": "^0.5.6",
     "kraken-js": "^2.3.0",
     "lodash": "^4.17.15",
-    "mongodb": "^3.5.5",
+    "mongodb": "^3.6.2",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "svg-to-png": "^4.0.0",
